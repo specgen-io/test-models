@@ -3,14 +3,14 @@ version: 2.1
 parameters:
   specgen-version:
     type: string
-    default: 2.0.248
+    default: 2.0.330
 
   specgen-version-major:
     type: string
     default: v2
 
 jobs:
-  build-test:
+  build-test-go:
     working_directory: ~/test-models-go
     docker:
       - image: cimg/go:1.16.4
@@ -27,9 +27,26 @@ jobs:
             go test ./... -v 2>&1 | go-junit-report > ./test-results/go-test-report.xml
       - store_test_results:
           path: ./go/test-results
+  build-test-ruby:
+    working_directory: ~/test-models-ruby
+    docker:
+      - image: cimg/ruby:3.0.0
+    steps:
+      - checkout
+      - run:
+          name: Test Ruby models
+          command: |
+            cd ./ruby
+            bundle inject specgen "= << pipeline.parameters.specgen-version >>"
+            bundle install
+            rake
+      - store_test_results:
+          path: ./ruby/test-results
 
 workflows:
   build-test:
     jobs:
-      - build-test:
+      - build-test-go:
+          context: specgen
+      - build-test-ruby:
           context: specgen
