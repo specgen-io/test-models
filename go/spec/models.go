@@ -6,7 +6,7 @@ import "github.com/google/uuid"
 import "github.com/shopspring/decimal"
 
 type Message struct {
-	Field int32 `json:"field"`
+	Field int `json:"field"`
 }
 
 type Nested struct {
@@ -21,13 +21,13 @@ type Parent struct {
 type Choice string
 
 const (
-	FirstChoice Choice = "FIRST_CHOICE"
-	SecondChoice Choice = "SECOND_CHOICE"
-	ThirdChoice Choice = "THIRD_CHOICE"
+	ChoiceFirstChoice Choice = "FIRST_CHOICE"
+	ChoiceSecondChoice Choice = "SECOND_CHOICE"
+	ChoiceThirdChoice Choice = "THIRD_CHOICE"
 )
 
-var ChoiceValuesStrings = []string{string(FirstChoice), string(SecondChoice), string(ThirdChoice)}
-var ChoiceValues = []Choice{FirstChoice, SecondChoice, ThirdChoice}
+var ChoiceValuesStrings = []string{string(ChoiceFirstChoice), string(ChoiceSecondChoice), string(ChoiceThirdChoice)}
+var ChoiceValues = []Choice{ChoiceFirstChoice, ChoiceSecondChoice, ChoiceThirdChoice}
 
 func (self *Choice) UnmarshalJSON(b []byte) error {
 	str, err := readEnumStringValue(b, ChoiceValuesStrings)
@@ -41,7 +41,7 @@ type EnumFields struct {
 }
 
 type NumericFields struct {
-	IntField int32 `json:"int_field"`
+	IntField int `json:"int_field"`
 	LongField int64 `json:"long_field"`
 	FloatField float32 `json:"float_field"`
 	DoubleField float64 `json:"double_field"`
@@ -57,17 +57,17 @@ type NonNumericFields struct {
 }
 
 type ArrayFields struct {
-	IntArrayField []int32 `json:"int_array_field"`
+	IntArrayField []int `json:"int_array_field"`
 	StringArrayField []string `json:"string_array_field"`
 }
 
 type MapFields struct {
-	IntMapField map[string]int32 `json:"int_map_field"`
+	IntMapField map[string]int `json:"int_map_field"`
 	StringMapField map[string]string `json:"string_map_field"`
 }
 
 type OptionalFields struct {
-	IntOptionField *int32 `json:"int_option_field"`
+	IntOptionField *int `json:"int_option_field"`
 	StringOptionField *string `json:"string_option_field"`
 }
 
@@ -78,12 +78,12 @@ type RawJsonField struct {
 type OrderCreated struct {
 	Id uuid.UUID `json:"id"`
 	Sku string `json:"sku"`
-	Quantity int32 `json:"quantity"`
+	Quantity int `json:"quantity"`
 }
 
 type OrderChanged struct {
 	Id uuid.UUID `json:"id"`
-	Quantity int32 `json:"quantity"`
+	Quantity int `json:"quantity"`
 }
 
 type OrderCanceled struct {
