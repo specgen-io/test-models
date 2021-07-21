@@ -43,8 +43,6 @@ jobs:
       - store_test_results:
           path: ./ruby/test-results
   build-test-superstruct:
-    environment:
-      SPECGEN_VERSION: << pipeline.parameters.specgen-version >>
     working_directory: ~/test-models-superstruct
     docker:
       - image: cimg/node:14.15.1
