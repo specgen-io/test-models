@@ -42,6 +42,26 @@ jobs:
             rake
       - store_test_results:
           path: ./ruby/test-results
+  build-test-superstruct:
+    environment:
+      SPECGEN_VERSION: << pipeline.parameters.specgen-version >>
+    working_directory: ~/test-models-superstruct
+    docker:
+      - image: cimg/node:14.15.1
+    steps:
+      - checkout
+      - run:
+          name: Test Superstruct models
+          command: |
+            cd ./superstruct
+            npm add specgen.io@$SPECGEN_VERSION
+            npm install
+            npm run codegen
+            mkdir -p ./test-results
+            export JEST_JUNIT_OUTPUT_DIR=./test-results
+            npm run test
+      - store_test_results:
+          path: ./superstruct/test-results
 
 workflows:
   build-test:
@@ -49,4 +69,6 @@ workflows:
       - build-test-go:
           context: specgen
       - build-test-ruby:
+          context: specgen
+      - build-test-superstruct:
           context: specgen
