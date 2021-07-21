@@ -117,7 +117,7 @@ func TestNonNumericFieldsNegative(t *testing.T) {
 
 func TestArrayFields(t *testing.T) {
 	data := spec.ArrayFields{
-		[]int32{1, 2, 3},
+		[]int{1, 2, 3},
 		[]string{"one", "two", "three"},
 	}
 
@@ -145,7 +145,7 @@ func TestArrayFieldsNegative(t *testing.T) {
 
 func TestMapFields(t *testing.T) {
 	data := spec.MapFields{
-		map[string]int32{"one": 1, "two": 2},
+		map[string]int{"one": 1, "two": 2},
 		map[string]string{"one": "first", "two": "second"},
 	}
 
@@ -172,7 +172,7 @@ func TestMapFieldsNegative(t *testing.T) {
 }
 
 func TestOptionalFields(t *testing.T) {
-	var optionalInt int32 = 123
+	var optionalInt int = 123
 	var optionalString = "the string"
 	data := spec.OptionalFields{
 		&optionalInt,
@@ -269,7 +269,7 @@ func TestOrderCreatedNegative(t *testing.T) {
 
 func TestEnumFields(t *testing.T) {
 	data := spec.EnumFields{
-		spec.SecondChoice,
+		spec.ChoiceSecondChoice,
 	}
 
 	jsonStr := `{"enum_field":"SECOND_CHOICE"}`
