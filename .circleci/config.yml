@@ -88,8 +88,8 @@ jobs:
       - save_cache:
           key: cache-{{ checksum "build.sbt" }}
           paths:
-            - ~/./circe/sbt
-            - ~/./circe/ivy2
+            - ~/circe/sbt
+            - ~/circe/ivy2
 
 workflows:
   build-test:
