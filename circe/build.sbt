@@ -7,7 +7,7 @@ useJCenter := true
 
 enablePlugins(SpecCirce)
 
-specFile := file("spec.yaml")
+specFile := file("./../spec.yaml")
 
 libraryDependencies ++= specSttpDependencies ++ Seq(
   "org.scalatest" %% "scalatest" % "3.0.8" % Test
