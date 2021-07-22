@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs:
+  artifactory: moda/artifactory@0.2.0
+
 parameters:
   specgen-version:
     type: string
@@ -60,6 +63,33 @@ jobs:
             npm run test
       - store_test_results:
           path: ./superstruct/test-results
+  build-test-circe:
+    environment:
+      SPECGEN_VERSION: << pipeline.parameters.specgen-version >>
+    working_directory: ~/test-models-circe
+    docker:
+      - image: circleci/openjdk:8-jdk
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - cache-{{ checksum "build.sbt" }}
+      - artifactory/setup-sbt:
+          jfrog-server-url: specgen.jfrog.io
+          repo-name: sbt
+      - run:
+          name: Build and test Scala client
+          command: |
+            cd ./circe
+            mkdir -p ./test-results
+            sbt -Djunitxml=./test-results test < /dev/null
+      - store_test_results:
+          path: ./circe/test-results
+      - save_cache:
+          key: cache-{{ checksum "build.sbt" }}
+          paths:
+            - ~/.sbt
+            - ~/.ivy2
 
 workflows:
   build-test:
@@ -69,4 +99,6 @@ workflows:
       - build-test-ruby:
           context: specgen
       - build-test-superstruct:
+          context: specgen
+      - build-test-circe:
           context: specgen
