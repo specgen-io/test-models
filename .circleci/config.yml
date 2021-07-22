@@ -78,7 +78,7 @@ jobs:
           jfrog-server-url: specgen.jfrog.io
           repo-name: sbt
       - run:
-          name: Build and test Scala client
+          name: Test Circe models
           command: |
             cd ./circe
             mkdir -p ./test-results
