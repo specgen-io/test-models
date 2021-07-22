@@ -3,7 +3,7 @@ import { checkEncodeDecode } from '../util'
 
 import {
   Message, TMessage
-} from '../v2';
+} from '../models_v2';
 
 describe('v2 object', function() {
   let decoded: Message = {field: 'the string'}

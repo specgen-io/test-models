@@ -22,7 +22,7 @@ import {
   TOptionalFields,
   OrderEvent,
   TOrderEvent,
-} from '../index';
+} from '../models';
 
 describe('object', function() {
   let decoded: Message = {field: 123}

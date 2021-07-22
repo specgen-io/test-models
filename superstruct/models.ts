@@ -54,7 +54,7 @@ export const TNonNumericFields = t.object({
     string_field: t.string(),
     uuid_field: t.string(),
     date_field: t.string(),
-    datetime_field: t.DateTime,
+    datetime_field: t.StrDateTime,
 })
 
 export type NonNumericFields = t.Infer<typeof TNonNumericFields>
