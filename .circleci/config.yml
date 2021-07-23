@@ -73,7 +73,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - cache-{{ checksum "build.sbt" }}
+            - cache-{{ checksum "/circe/build.sbt" }}
       - artifactory/setup-sbt:
           jfrog-server-url: specgen.jfrog.io
           repo-name: sbt
@@ -86,7 +86,7 @@ jobs:
       - store_test_results:
           path: ./circe/test-results
       - save_cache:
-          key: cache-{{ checksum "build.sbt" }}
+          key: cache-{{ checksum "/circe/build.sbt" }}
           paths:
             - ~/.sbt
             - ~/.ivy2
