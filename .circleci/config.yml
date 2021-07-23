@@ -46,6 +46,8 @@ jobs:
       - store_test_results:
           path: ./ruby/test-results
   build-test-superstruct:
+    environment:
+      SPECGEN_VERSION: << pipeline.parameters.specgen-version >>
     working_directory: ~/test-models-superstruct
     docker:
       - image: cimg/node:14.15.1
@@ -63,6 +65,26 @@ jobs:
             npm run test
       - store_test_results:
           path: ./superstruct/test-results
+  build-test-iots:
+    environment:
+      SPECGEN_VERSION: << pipeline.parameters.specgen-version >>
+    working_directory: ~/test-models-iots
+    docker:
+      - image: cimg/node:14.15.1
+    steps:
+      - checkout
+      - run:
+          name: Test Iots models
+          command: |
+            cd ./iots
+            npm add specgen.io@$SPECGEN_VERSION
+            npm install
+            npm run codegen
+            mkdir -p ./test-results
+            export JEST_JUNIT_OUTPUT_DIR=./test-results
+            npm run test
+      - store_test_results:
+          path: ./iots/test-results         
   build-test-circe:
     environment:
       SPECGEN_VERSION: << pipeline.parameters.specgen-version >>
@@ -89,7 +111,7 @@ jobs:
           key: cache-{{ checksum "./circe/build.sbt" }}
           paths:
             - ~/.sbt
-            - ~/.ivy2
+            - ~/.ivy2      
 
 workflows:
   build-test:
@@ -99,6 +121,8 @@ workflows:
       - build-test-ruby:
           context: specgen
       - build-test-superstruct:
+          context: specgen
+      - build-test-iots:
           context: specgen
       - build-test-circe:
           context: specgen
