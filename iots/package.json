@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "codegen": "specgen models-ts --spec-file spec.yaml --generate-path . --validation io-ts",
+    "codegen": "specgen models-ts --spec-file ./../spec.yaml --generate-path . --validation io-ts",
     "test": "jest",
     "coverage": "jest --coverage"
   },
