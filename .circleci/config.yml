@@ -13,7 +13,7 @@ parameters:
     default: v2
 
 jobs:
-  build-test-go:
+  go:
     working_directory: ~/test-models-go
     docker:
       - image: cimg/go:1.16.4
@@ -30,7 +30,7 @@ jobs:
             go test ./... -v 2>&1 | go-junit-report > ./test-results/go-test-report.xml
       - store_test_results:
           path: ./go/test-results
-  build-test-ruby:
+  ruby:
     working_directory: ~/test-models-ruby
     docker:
       - image: cimg/ruby:3.0.0
@@ -45,7 +45,7 @@ jobs:
             rake
       - store_test_results:
           path: ./ruby/test-results
-  build-test-superstruct:
+  ts-superstruct:
     environment:
       SPECGEN_VERSION: << pipeline.parameters.specgen-version >>
     working_directory: ~/test-models-superstruct
@@ -65,7 +65,7 @@ jobs:
             npm run test
       - store_test_results:
           path: ./superstruct/test-results
-  build-test-iots:
+  ts-iots:
     environment:
       SPECGEN_VERSION: << pipeline.parameters.specgen-version >>
     working_directory: ~/test-models-iots
@@ -85,7 +85,7 @@ jobs:
             npm run test
       - store_test_results:
           path: ./iots/test-results         
-  build-test-circe:
+  scala-circe:
     environment:
       SPECGEN_VERSION: << pipeline.parameters.specgen-version >>
     working_directory: ~/test-models-circe
@@ -116,13 +116,13 @@ jobs:
 workflows:
   build-test:
     jobs:
-      - build-test-go:
+      - go:
           context: specgen
-      - build-test-ruby:
+      - ruby:
           context: specgen
-      - build-test-superstruct:
+      - ts-superstruct:
           context: specgen
-      - build-test-iots:
+      - ts-iots:
           context: specgen
-      - build-test-circe:
+      - scala-circe:
           context: specgen
