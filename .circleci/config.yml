@@ -6,7 +6,7 @@ orbs:
 parameters:
   specgen-version:
     type: string
-    default: 2.0.330
+    default: 2.0.348
 
   specgen-version-major:
     type: string
@@ -31,6 +31,8 @@ jobs:
       - store_test_results:
           path: ./go/test-results
   ruby:
+    environment:
+      SPECGEN_VERSION: << pipeline.parameters.specgen-version >>
     working_directory: ~/test-models-ruby
     docker:
       - image: cimg/ruby:3.0.0
@@ -40,7 +42,7 @@ jobs:
           name: Test Ruby models
           command: |
             cd ./ruby
-            bundle inject specgen "= << pipeline.parameters.specgen-version >>"
+            bundle inject specgen "= $SPECGEN_VERSION"
             bundle install
             rake
       - store_test_results:
