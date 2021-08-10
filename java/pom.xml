@@ -71,7 +71,7 @@
                 </executions>
                 <configuration>
                     <commandlineArgs>
-                        models-java --spec-file ./spec.yaml --generate-path ./src/main/java/test_service.models
+                        models-java --spec-file ./../spec.yaml --generate-path ./src/main/java/test_service.models
                     </commandlineArgs>
                 </configuration>
             </plugin>
