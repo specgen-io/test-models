@@ -114,3 +114,17 @@ export const TOrderEvent = t.union([
 ])
 
 export type OrderEvent = t.Infer<typeof TOrderEvent>
+
+export const TMessageBadFormat = t.object({
+    'field-int': t.number(),
+})
+
+export type MessageBadFormat = t.Infer<typeof TMessageBadFormat>
+
+export const TOrderEventBadFormat = t.union([
+    t.object({'created-order': TOrderCreated}),
+    t.object({'changed-order': TOrderChanged}),
+    t.object({'canceled-order': TOrderCanceled}),
+])
+
+export type OrderEventBadFormat = t.Infer<typeof TOrderEventBadFormat>

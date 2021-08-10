@@ -6,7 +6,7 @@ orbs:
 parameters:
   specgen-version:
     type: string
-    default: 2.0.388
+    default: 2.0.396
 
   specgen-version-major:
     type: string
@@ -61,7 +61,7 @@ jobs:
             cd ./ts-superstruct
             npm add specgen.io@$SPECGEN_VERSION
             npm install
-            npm run codegen
+            npm run specgen
             mkdir -p ./test-results
             export JEST_JUNIT_OUTPUT_DIR=./test-results
             npm run test
@@ -81,7 +81,7 @@ jobs:
             cd ./ts-iots
             npm add specgen.io@$SPECGEN_VERSION
             npm install
-            npm run codegen
+            npm run specgen
             mkdir -p ./test-results
             export JEST_JUNIT_OUTPUT_DIR=./test-results
             npm run test

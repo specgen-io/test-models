@@ -123,3 +123,18 @@ export const TOrderEvent = t.union([
 ])
 
 export type OrderEvent = t.TypeOf<typeof TOrderEvent>
+
+
+export const TMessageBadFormat = t.interface({
+    'field-int': t.number,
+})
+
+export type MessageBadFormat = t.TypeOf<typeof TMessageBadFormat>
+
+export const TOrderEventBadFormat = t.union([
+    t.interface({'created-order': TOrderCreated}),
+    t.interface({'changed-order': TOrderChanged}),
+    t.interface({'canceled-order': TOrderCanceled}),
+])
+
+export type OrderEventBadFormat = t.TypeOf<typeof TOrderEventBadFormat>
