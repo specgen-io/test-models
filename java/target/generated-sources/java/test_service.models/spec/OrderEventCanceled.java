@@ -7,14 +7,14 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.annotation.JsonSubTypes.*;
 
-	public class OrderEventChanged implements OrderEvent {
+public class OrderEventCanceled implements OrderEvent {
 	@JsonUnwrapped
-	public OrderChanged data;
+	public OrderCanceled data;
 
-	public OrderEventChanged() {
+	public OrderEventCanceled() {
 	}
 
-	public OrderEventChanged(OrderChanged data) {
+	public OrderEventCanceled(OrderCanceled data) {
 		this.data = data;
 	}
 }

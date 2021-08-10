@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.annotation.JsonSubTypes.*;
 
-	public class OrderEventCreated implements OrderEvent {
+public class OrderEventCreated implements OrderEvent {
 	@JsonUnwrapped
 	public OrderCreated data;
 
