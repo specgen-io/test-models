@@ -74,3 +74,12 @@ models:
       created: OrderCreated
       changed: OrderChanged
       canceled: OrderCanceled
+
+  MessageCamelCase:
+    fieldInt: int
+
+  OrderEventCamelCase:
+    oneOf:
+      createdOrder: OrderCreated
+      changedOrder: OrderChanged
+      canceledOrder: OrderCanceled

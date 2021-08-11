@@ -61,7 +61,7 @@ jobs:
             cd ./ts-superstruct
             npm add specgen.io@$SPECGEN_VERSION
             npm install
-            npm run codegen
+            npm run specgen
             mkdir -p ./test-results
             export JEST_JUNIT_OUTPUT_DIR=./test-results
             npm run test
@@ -81,7 +81,7 @@ jobs:
             cd ./ts-iots
             npm add specgen.io@$SPECGEN_VERSION
             npm install
-            npm run codegen
+            npm run specgen
             mkdir -p ./test-results
             export JEST_JUNIT_OUTPUT_DIR=./test-results
             npm run test
