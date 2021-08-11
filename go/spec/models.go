@@ -95,3 +95,13 @@ type OrderEvent struct {
 	Changed *OrderChanged `json:"changed,omitempty"`
 	Canceled *OrderCanceled `json:"canceled,omitempty"`
 }
+
+type MessageCamelCase struct {
+	FieldInt int `json:"fieldInt"`
+}
+
+type OrderEventCamelCase struct {
+	CreatedOrder *OrderCreated `json:"createdOrder,omitempty"`
+	ChangedOrder *OrderChanged `json:"changedOrder,omitempty"`
+	CanceledOrder *OrderCanceled `json:"canceledOrder,omitempty"`
+}
