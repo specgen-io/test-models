@@ -75,11 +75,11 @@ models:
       changed: OrderChanged
       canceled: OrderCanceled
 
-  MessageBadFormat:
-    field-int: int
+  MessageCamelCase:
+    fieldInt: int
 
-  OrderEventBadFormat:
+  OrderEventCamelCase:
     oneOf:
-      created-order: OrderCreated
-      changed-order: OrderChanged
-      canceled-order: OrderCanceled
+      createdOrder: OrderCreated
+      changedOrder: OrderChanged
+      canceledOrder: OrderCanceled

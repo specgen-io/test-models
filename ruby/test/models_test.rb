@@ -104,6 +104,12 @@ module TestService
       json = '{"changed":{"id":"58d5e212-165b-4ca0-909b-c86b9cee0111","quantity":3}}'
       check_serialization(OrderEvent, data, json)
     end
+
+    def test_object_camel_case
+      data = MessageCameCase.new(fieldInt: 0)
+      json = '{"fieldInt":0}'
+      check_serialization(MessageCameCase, data, json)
+    end
   end
 end
 

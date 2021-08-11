@@ -115,16 +115,16 @@ export const TOrderEvent = t.union([
 
 export type OrderEvent = t.Infer<typeof TOrderEvent>
 
-export const TMessageBadFormat = t.object({
-    'field-int': t.number(),
+export const TMessageCamelCase = t.object({
+    fieldInt: t.number(),
 })
 
-export type MessageBadFormat = t.Infer<typeof TMessageBadFormat>
+export type MessageCamelCase = t.Infer<typeof TMessageCamelCase>
 
-export const TOrderEventBadFormat = t.union([
-    t.object({'created-order': TOrderCreated}),
-    t.object({'changed-order': TOrderChanged}),
-    t.object({'canceled-order': TOrderCanceled}),
+export const TOrderEventCamelCase = t.union([
+    t.object({createdOrder: TOrderCreated}),
+    t.object({changedOrder: TOrderChanged}),
+    t.object({canceledOrder: TOrderCanceled}),
 ])
 
-export type OrderEventBadFormat = t.Infer<typeof TOrderEventBadFormat>
+export type OrderEventCamelCase = t.Infer<typeof TOrderEventCamelCase>
