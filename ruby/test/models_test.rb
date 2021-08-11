@@ -106,9 +106,9 @@ module TestService
     end
 
     def test_object_camel_case
-      data = MessageCameCase.new(fieldInt: 0)
+      data = MessageCamelCase.new(fieldInt: 0)
       json = '{"fieldInt":0}'
-      check_serialization(MessageCameCase, data, json)
+      check_serialization(MessageCamelCase, data, json)
     end
   end
 end
