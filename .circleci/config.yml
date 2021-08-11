@@ -138,7 +138,6 @@ jobs:
           key: cache-{{ checksum "./java/pom.xml" }}
           paths:
             - ~/.ivy2                  
-            - ~/.m2
 
 commands:
   setup-artifactory-maven:
