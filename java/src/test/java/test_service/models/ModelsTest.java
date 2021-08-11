@@ -1,7 +1,22 @@
 package test_service.models;
 
+import test_service.models.spec.Message;
+import test_service.models.spec.Nested;
+import test_service.models.spec.Parent;
+import test_service.models.spec.EnumFields;
+import test_service.models.spec.Choice;
+import test_service.models.spec.NumericFields;
+import test_service.models.spec.NonNumericFields;
+import test_service.models.spec.ArrayFields;
+import test_service.models.spec.MapFields;
+import test_service.models.spec.OptionalFields;
+import test_service.models.spec.RawJsonField;
+import test_service.models.spec.OrderCreated;
+import test_service.models.spec.OrderEvent;
+import test_service.models.spec.OrderEventCanceled;
+import test_service.models.spec.OrderCanceled;
+
 import com.fasterxml.jackson.databind.*;
-import test_service.models.spec.*;
 import org.junit.Test;
 
 import java.io.*;

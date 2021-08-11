@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes.*;
 
 public class EnumFields {
 	@JsonProperty("enum_field")
-	private test_service.models.spec.Choice enumField;
+	private Choice enumField;
 
 	public EnumFields() {
 	}
