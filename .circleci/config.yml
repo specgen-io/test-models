@@ -7,7 +7,6 @@ parameters:
   specgen-version:
     type: string
     default: 2.0.421
-
   specgen-version-major:
     type: string
     default: v2
@@ -113,7 +112,79 @@ jobs:
           key: cache-{{ checksum "./scala-circe/build.sbt" }}
           paths:
             - ~/.sbt
-            - ~/.ivy2      
+            - ~/.ivy2   
+  java:
+    working_directory: ~/test-models-java
+    docker:
+      - image: circleci/openjdk:8-jdk
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - cache-{{ checksum "./java/pom.xml" }}
+      - setup-artifactory-maven:
+          jfrog-server-url: specgen.jfrog.io
+          repo-name: maven
+      - run:
+          name: Test Maven models
+          command: |
+            cd ./java
+            mkdir -p ./test-results
+            mvn test -Dspecgen.version=<<pipeline.parameters.specgen-version>>
+      - store_test_results:
+          path: ./java/test-results
+      - save_cache:
+          key: cache-{{ checksum "./java/pom.xml" }}
+          paths:
+            - ~/.ivy2                  
+
+commands:
+  setup-artifactory-maven:
+    parameters:
+      jfrog-server-url:
+        type: string
+      repo-name:
+        type: string
+    steps:
+      - run:
+          name: Setup Artifactory for Maven
+          command: |
+            mkdir -p ~/.m2
+            tee > ~/.m2/settings.xml \<<END
+            <?xml version="1.0" encoding="UTF-8"?>
+            <settings xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.2.0 http://maven.apache.org/xsd/settings-1.2.0.xsd" xmlns="http://maven.apache.org/SETTINGS/1.2.0"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+              <servers>
+                <server>
+                  <id>artifactory</id>
+                  <username>$JFROG_USER</username>
+                  <password>$JFROG_PASS</password>
+                </server>
+              </servers>
+              <profiles>
+                <profile>
+                  <id>artifactory</id>
+                  <repositories>
+                    <repository>
+                      <id>artifactory</id>
+                      <name>maven</name>
+                      <url>https://<<parameters.jfrog-server-url>>/artifactory/<<parameters.repo-name>></url>
+                    </repository>
+                  </repositories>
+                  <pluginRepositories>
+                    <pluginRepository>
+                      <id>artifactory</id>
+                      <name>maven</name>
+                      <url>https://specgen.jfrog.io/artifactory/maven</url>
+                    </pluginRepository>
+                  </pluginRepositories>
+                  <activation>
+                    <activeByDefault>true</activeByDefault>
+                  </activation>
+                </profile>
+              </profiles>
+            </settings>
+            END
 
 workflows:
   build-test:
@@ -127,4 +198,6 @@ workflows:
       - ts-iots:
           context: specgen
       - scala-circe:
+          context: specgen
+      - java:
           context: specgen
