@@ -65,19 +65,18 @@
                 <executions>
                     <execution>
                         <goals>
-                            <goal>generate</goal>
+                            <goal>models-java</goal>
                         </goals>
                     </execution>
                 </executions>
                 <configuration>
-                    <commandlineArgs>
-                        models-java --spec-file ./../spec.yaml --generate-path ./target/generated-sources/java/test_service.models
-                    </commandlineArgs>
+                    <specFile>${project.basedir}/../spec.yaml</specFile>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.2.0</version>
                 <executions>
                     <execution>
                         <id>add-test-sources</id>
