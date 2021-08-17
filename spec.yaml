@@ -70,7 +70,13 @@ models:
     id: uuid
 
   OrderEvent:
-    discriminator: type
+    oneOf:
+      created: OrderCreated
+      changed: OrderChanged
+      canceled: OrderCanceled
+
+  OrderEventDiscriminated:
+    discriminator: _type
     oneOf:
       created: OrderCreated
       changed: OrderChanged
