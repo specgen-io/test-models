@@ -1,4 +1,4 @@
-package test_service.models.spec;
+package test_service.models;
 
 import java.time.*;
 import java.util.*;
@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes.*;
 
 @JsonTypeInfo(
 	use = JsonTypeInfo.Id.NAME,
-	include = JsonTypeInfo.As.WRAPPER_OBJECT
+	include = JsonTypeInfo.As.PROPERTY
 )
 @JsonSubTypes({
 	@Type(value = OrderEventCreated.class, name = "created"),
