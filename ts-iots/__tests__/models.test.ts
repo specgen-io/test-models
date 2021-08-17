@@ -21,7 +21,9 @@ import {
   OptionalFields,
   TOptionalFields,
   OrderEvent,
-  TOrderEvent
+  TOrderEvent,
+  OrderEventDiscriminated,
+  TOrderEventDiscriminated
 } from '../models';
 
 describe('object', function() {
@@ -157,5 +159,14 @@ describe('oneof types', function() {
   checkEncodeDecode(TOrderEvent, decoded, encoded)
   it('decode breaks', function() {
     expect(() => t.decode(TOrderEvent, { created: {} })).toThrowError('Decoding failed');
+  })
+});
+
+describe('oneof type - discriminated', function() {
+  let decoded: OrderEventDiscriminated = { _type: 'changed', id: '123e4567-e89b-12d3-a456-426655440000', quantity: 123 }
+  let encoded = { _type: 'changed', id: '123e4567-e89b-12d3-a456-426655440000', quantity: 123 }
+  checkEncodeDecode(TOrderEventDiscriminated, decoded, encoded)
+  it('decode breaks', function() {
+    expect(() => t.decode(TOrderEventDiscriminated, { _type: 'changed' })).toThrowError('Decoding failed');
   })
 });

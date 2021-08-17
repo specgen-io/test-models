@@ -22,6 +22,8 @@ import {
   TOptionalFields,
   OrderEvent,
   TOrderEvent,
+  OrderEventDiscriminated,
+  TOrderEventDiscriminated,
 } from '../models';
 
 describe('object', function() {
@@ -154,11 +156,20 @@ describe('optional fields missing', function() {
   checkEncodeDecode(TOptionalFields, decoded, encoded)
 });
 
-describe('oneof types', function() {
+describe('oneof type - wrapped', function() {
   let decoded: OrderEvent = { changed: { id: 'id123', quantity: 123 } }
   let encoded = { changed: {id: 'id123', quantity: 123} }
   checkEncodeDecode(TOrderEvent, decoded, encoded)
   it('decode breaks', function() {
     expect(() => t.decode(TOrderEvent, { created: {} })).toThrowError();
+  })
+});
+
+describe('oneof type - discriminated', function() {
+  let decoded: OrderEventDiscriminated = { _type: 'changed', id: 'id123', quantity: 123 }
+  let encoded = { _type: 'changed', id: 'id123', quantity: 123 }
+  checkEncodeDecode(TOrderEventDiscriminated, decoded, encoded)
+  it('decode breaks', function() {
+    expect(() => t.decode(TOrderEventDiscriminated, { _type: 'changed' })).toThrowError('Expected the value to satisfy a union');
   })
 });

@@ -135,20 +135,20 @@ public class ModelsTest {
 	}
 
 	@Test
-	public void jsonDiscriminatedUnionTest() throws IOException {
+	public void jsonOneOfWrapperTest() throws IOException {
 		OrderEvent data = new OrderEventCanceled(new OrderCanceled(UUID.fromString("123e4567-e89b-12d3-a456-426655440000")));
 
-		String jsonStr = "{'@type':'canceled','id':'123e4567-e89b-12d3-a456-426655440000'}";
+		String jsonStr = "{'canceled':{'id':'123e4567-e89b-12d3-a456-426655440000'}}";
 
 		check(data, jsonStr, OrderEvent.class);
 	}
 
 	@Test
-	public void jsonUnionTest() throws IOException {
-		OrderEventCamelCase data = new OrderEventCamelCaseCanceledOrder(new OrderCanceled(UUID.fromString("123e4567-e89b-12d3-a456-426655440000")));
+	public void jsonOneOfDiscriminatorTest() throws IOException {
+		OrderEventDiscriminated data = new OrderEventDiscriminatedCanceled(new OrderCanceled(UUID.fromString("123e4567-e89b-12d3-a456-426655440000")));
 
-		String jsonStr = "{'canceledOrder':{'id':'123e4567-e89b-12d3-a456-426655440000'}}";
+		String jsonStr = "{'_type':'canceled','id':'123e4567-e89b-12d3-a456-426655440000'}";
 
-		check(data, jsonStr, OrderEventCamelCase.class);
+		check(data, jsonStr, OrderEventDiscriminated.class);
 	}
 }
