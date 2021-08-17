@@ -2,20 +2,20 @@ package tests
 
 import (
 	"encoding/json"
-	"github.com/specgen-io/test-models-go/spec_v2"
-	"gotest.tools/assert"
+	"github.com/specgen-io/test-models-go/test_service_models/v2"
+	"gotest.tools/v3/assert"
 	"reflect"
 	"testing"
 )
 
 func TestMessageV2(t *testing.T) {
-	data := spec_v2.Message{
+	data := v2.Message{
 		"the string",
 	}
 
 	jsonStr := `{"field":"the string"}`
 
-	var actualData spec_v2.Message
+	var actualData v2.Message
 	actualJson, err := json.Marshal(data)
 	assert.NilError(t, err)
 
