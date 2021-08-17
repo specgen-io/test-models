@@ -1,7 +1,5 @@
 package test_service.models;
 
-import test_service.models.spec.*;
-
 import com.fasterxml.jackson.databind.*;
 import org.junit.Test;
 
@@ -12,7 +10,6 @@ import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
-import static test_service.models.Jsoner.*;
 
 public class ModelsTest {
 
@@ -23,11 +20,11 @@ public class ModelsTest {
 	public <T> void check(T data, String jsonStr, Class<T> tClass) throws IOException {
 		ObjectMapper objectMapper = new ObjectMapper();
 
-		String actualJson = serialize(objectMapper, data);
+		String actualJson = Jsoner.serialize(objectMapper, data);
 		jsonStr = fixQuotes(jsonStr);
 		assertEquals(jsonStr, actualJson);
 
-		T actualData = deserialize(objectMapper, jsonStr, tClass);
+		T actualData = Jsoner.deserialize(objectMapper, jsonStr, tClass);
 		assertThat(actualData).usingRecursiveComparison().isEqualTo(data);
 	}
 
@@ -138,11 +135,20 @@ public class ModelsTest {
 	}
 
 	@Test
-	public void jsonUnionTest() throws IOException {
+	public void jsonDiscriminatedUnionTest() throws IOException {
 		OrderEvent data = new OrderEventCanceled(new OrderCanceled(UUID.fromString("123e4567-e89b-12d3-a456-426655440000")));
 
-		String jsonStr = "{'canceled':{'id':'123e4567-e89b-12d3-a456-426655440000'}}";
+		String jsonStr = "{'@type':'canceled','id':'123e4567-e89b-12d3-a456-426655440000'}";
 
 		check(data, jsonStr, OrderEvent.class);
+	}
+
+	@Test
+	public void jsonUnionTest() throws IOException {
+		OrderEventCamelCase data = new OrderEventCamelCaseCanceledOrder(new OrderCanceled(UUID.fromString("123e4567-e89b-12d3-a456-426655440000")));
+
+		String jsonStr = "{'canceledOrder':{'id':'123e4567-e89b-12d3-a456-426655440000'}}";
+
+		check(data, jsonStr, OrderEventCamelCase.class);
 	}
 }
