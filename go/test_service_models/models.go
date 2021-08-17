@@ -1,4 +1,4 @@
-package spec
+package test_service_models
 
 import "cloud.google.com/go/civil"
 import "encoding/json"
