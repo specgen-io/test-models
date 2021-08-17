@@ -130,7 +130,7 @@ jobs:
           command: |
             cd ./java
             mkdir -p ./test-results
-            mvn test -Dspecgen.version=<<pipeline.parameters.specgen-version>>
+            mvn clean test -Dspecgen.version=<<pipeline.parameters.specgen-version>>
       - store_test_results:
           path: ./java/test-results
       - save_cache:
