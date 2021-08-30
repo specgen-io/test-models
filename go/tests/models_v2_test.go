@@ -2,9 +2,9 @@ package tests
 
 import (
 	"encoding/json"
-	"github.com/specgen-io/test-models-go/test_service_models/v2"
 	"gotest.tools/v3/assert"
 	"reflect"
+	"test-models/test_service_models/v2"
 	"testing"
 )
 
