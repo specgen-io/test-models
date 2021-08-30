@@ -5,9 +5,9 @@ import (
 	"encoding/json"
 	"github.com/google/uuid"
 	"github.com/shopspring/decimal"
-	"github.com/specgen-io/test-models-go/test_service_models"
 	"gotest.tools/v3/assert"
 	"reflect"
+	"test-models/test_service_models"
 	"testing"
 )
 

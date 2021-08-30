@@ -1,4 +1,4 @@
-module github.com/specgen-io/test-models-go
+module test-models
 
 go 1.16
 
