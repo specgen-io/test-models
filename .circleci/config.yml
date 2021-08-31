@@ -1,12 +1,12 @@
 version: 2.1
 
 orbs:
-  artifactory: specgen/artifactory@0.1.0
+  artifactory: specgen/artifactory@0.4.0
 
 parameters:
   specgen-version:
     type: string
-    default: 2.0.508
+    default: 2.0.519
   specgen-version-major:
     type: string
     default: v2
@@ -37,11 +37,18 @@ jobs:
       - image: cimg/ruby:3.0.0
     steps:
       - checkout
+      - artifactory/setup-bundler:
+          jfrog-server-url: specgen.jfrog.io
       - run:
           name: Test Ruby models
           command: |
             cd ./ruby
-            bundle inject specgen "= $SPECGEN_VERSION"
+            tee --append ./Gemfile \<<END
+
+            source 'https://specgen.jfrog.io/artifactory/api/gems/gems/' do
+              gem 'specgen', '<< pipeline.parameters.specgen-version >>'
+            end
+            END
             bundle install
             rake
       - store_test_results:
