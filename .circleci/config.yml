@@ -63,7 +63,7 @@ jobs:
       - checkout
       - artifactory/setup-npm:
           jfrog-server-url: specgen.jfrog.io
-          repo-name: sbt
+          repo-name: npm
       - run:
           name: Test Superstruct models
           command: |
@@ -86,7 +86,7 @@ jobs:
       - checkout
       - artifactory/setup-npm:
           jfrog-server-url: specgen.jfrog.io
-          repo-name: sbt
+          repo-name: npm
       - run:
           name: Test Iots models
           command: |
