@@ -61,14 +61,14 @@ jobs:
       - image: cimg/node:14.15.1
     steps:
       - checkout
-      - artifactory/setup-npm:
+      - setup-npm:
           jfrog-server-url: specgen.jfrog.io
           repo-name: npm
       - run:
           name: Test Superstruct models
           command: |
             cd ./ts-superstruct
-            npm add specgen.io@$SPECGEN_VERSION
+            npm install specgen.io@$SPECGEN_VERSION
             npm install
             npm run specgen
             mkdir -p ./test-results
@@ -84,7 +84,7 @@ jobs:
       - image: cimg/node:14.15.1
     steps:
       - checkout
-      - artifactory/setup-npm:
+      - setup-npm:
           jfrog-server-url: specgen.jfrog.io
           repo-name: npm
       - run:
@@ -150,6 +150,20 @@ jobs:
           key: cache-{{ checksum "./java/pom.xml" }}
           paths:
             - ~/.ivy2                  
+
+commands:
+  setup-npm:
+    parameters:
+      jfrog-server-url:
+        type: string
+      repo-name:
+        type: string
+    steps:
+      - run:
+          name: Set up .npmrc
+          command: |
+            echo "registry=https://<< parameters.jfrog-server-url >>/artifactory/api/npm/<< parameters.repo-name >>/" > ~/.npmrc
+            curl -u$JFROG_USER:$JFROG_PASS https://<< parameters.jfrog-server-url >>/artifactory/api/npm/auth >> ~/.npmrc
 
 workflows:
   build-test:
