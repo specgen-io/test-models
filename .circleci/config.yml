@@ -68,6 +68,7 @@ jobs:
           name: Test Superstruct models
           command: |
             cd ./ts-superstruct
+            npm install
             npm install specgen.io@$SPECGEN_VERSION --registry=https://specgen.jfrog.io/artifactory/api/npm/npm/
             npm install
             npm run specgen
