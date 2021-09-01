@@ -169,7 +169,7 @@ commands:
             //<< parameters.jfrog-server-url >>/artifactory/api/npm/<< parameters.repo-name >>/:email = $JFROG_USER            
             END
             echo "Here's ~/.npmrc"
-            cat ~/.mpmrc
+            cat ~/.npmrc
 
 workflows:
   build-test:
