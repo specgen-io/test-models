@@ -6,7 +6,7 @@ orbs:
 parameters:
   specgen-version:
     type: string
-    default: 2.0.521
+    default: 2.0.527
   specgen-version-major:
     type: string
     default: v2
@@ -61,15 +61,15 @@ jobs:
       - image: cimg/node:16.8.0
     steps:
       - checkout
-      - setup-npm-auth:
+      - setup-npm:
           jfrog-server-url: specgen.jfrog.io
           repo-name: npm
+          scope: @specgen.io
       - run:
           name: Test Superstruct models
           command: |
             cd ./ts-superstruct
-            npm install
-            npm install specgen.io@$SPECGEN_VERSION --registry=https://specgen.jfrog.io/artifactory/api/npm/npm/
+            npm install @specgen.io/specgen.io@$SPECGEN_VERSION --save-dev
             npm install
             npm run specgen
             mkdir -p ./test-results
@@ -85,15 +85,15 @@ jobs:
       - image: cimg/node:16.8.0
     steps:
       - checkout
-      - setup-npm-auth:
+      - setup-npm:
           jfrog-server-url: specgen.jfrog.io
           repo-name: npm
+          scope: @specgen.io
       - run:
           name: Test Iots models
           command: |
             cd ./ts-iots
-            npm install
-            npm install specgen.io@$SPECGEN_VERSION --registry=https://specgen.jfrog.io/artifactory/api/npm/npm/
+            npm install @specgen.io/specgen.io@$SPECGEN_VERSION --save-dev
             npm install
             npm run specgen
             mkdir -p ./test-results
@@ -154,17 +154,25 @@ jobs:
             - ~/.ivy2                  
 
 commands:
-  setup-npm-auth:
+  setup-npm:
     parameters:
       jfrog-server-url:
         type: string
       repo-name:
         type: string
+      scope:
+        type: string
+        default: ""
     steps:
       - run:
           name: Set up .npmrc
           command: |
-            curl --silent  -u$JFROG_USER:$JFROG_PASS https://<< parameters.jfrog-server-url >>/artifactory/api/npm/auth | awk '{print "//<< parameters.jfrog-server-url >>/artifactory/api/npm/<< parameters.repo-name >>/:" $0}' > ~/.npmrc
+            export NPM_SCOPE_PREFIX=""
+            if [ << parameters.scope >> != "" ]; then
+              export NPM_SCOPE_PREFIX="${NPM_SCOPE_PREFIX}:"
+            fi
+            echo "${NPM_SCOPE_PREFIX}registry = https://<< parameters.jfrog-server-url >>/artifactory/api/npm/<< parameters.repo-name >>/" > ~/.npmrc
+            curl --silent  -u$JFROG_USER:$JFROG_PASS https://<< parameters.jfrog-server-url >>/artifactory/api/npm/auth | awk '{print "//<< parameters.jfrog-server-url >>/artifactory/api/npm/<< parameters.repo-name >>/:" $0}' >> ~/.npmrc
 
 workflows:
   build-test:
