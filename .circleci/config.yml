@@ -162,7 +162,7 @@ commands:
       - run:
           name: Set up .npmrc
           command: |
-            export JFROG_NPM_TOKEN=$(echo '$JFROG_USER:$JFROG_PASS' | base64)
+            export JFROG_NPM_TOKEN=$(printf "$JFROG_USER:$JFROG_PASS" | base64)
             tee ~/.npmrc \<<END
             //<< parameters.jfrog-server-url >>/artifactory/api/npm/<< parameters.repo-name >>/:_auth = $JFROG_NPM_TOKEN
             //<< parameters.jfrog-server-url >>/artifactory/api/npm/<< parameters.repo-name >>/:always-auth = true
