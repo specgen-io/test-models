@@ -168,11 +168,14 @@ commands:
           name: Set up .npmrc
           command: |
             export NPM_SCOPE_PREFIX=""
-            if [ << parameters.scope >> != "" ]; then
+            if [ "<< parameters.scope >>" != "" ]; then
               export NPM_SCOPE_PREFIX="@${NPM_SCOPE_PREFIX}:"
             fi
             echo "${NPM_SCOPE_PREFIX}registry = https://<< parameters.jfrog-server-url >>/artifactory/api/npm/<< parameters.repo-name >>/" > ~/.npmrc
             curl --silent  -u$JFROG_USER:$JFROG_PASS https://<< parameters.jfrog-server-url >>/artifactory/api/npm/auth | awk '{print "//<< parameters.jfrog-server-url >>/artifactory/api/npm/<< parameters.repo-name >>/:" $0}' >> ~/.npmrc
+
+            echo "Here's ~/.npmrc"
+            cat ~/.npmrc
 
 workflows:
   build-test:
