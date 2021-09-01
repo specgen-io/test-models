@@ -64,7 +64,7 @@ jobs:
       - setup-npm:
           jfrog-server-url: specgen.jfrog.io
           repo-name: npm
-          scope: @specgen.io
+          scope: specgen.io
       - run:
           name: Test Superstruct models
           command: |
@@ -88,7 +88,7 @@ jobs:
       - setup-npm:
           jfrog-server-url: specgen.jfrog.io
           repo-name: npm
-          scope: @specgen.io
+          scope: specgen.io
       - run:
           name: Test Iots models
           command: |
@@ -169,7 +169,7 @@ commands:
           command: |
             export NPM_SCOPE_PREFIX=""
             if [ << parameters.scope >> != "" ]; then
-              export NPM_SCOPE_PREFIX="${NPM_SCOPE_PREFIX}:"
+              export NPM_SCOPE_PREFIX="@${NPM_SCOPE_PREFIX}:"
             fi
             echo "${NPM_SCOPE_PREFIX}registry = https://<< parameters.jfrog-server-url >>/artifactory/api/npm/<< parameters.repo-name >>/" > ~/.npmrc
             curl --silent  -u$JFROG_USER:$JFROG_PASS https://<< parameters.jfrog-server-url >>/artifactory/api/npm/auth | awk '{print "//<< parameters.jfrog-server-url >>/artifactory/api/npm/<< parameters.repo-name >>/:" $0}' >> ~/.npmrc
