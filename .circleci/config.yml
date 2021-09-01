@@ -92,7 +92,8 @@ jobs:
           name: Test Iots models
           command: |
             cd ./ts-iots
-            npm add specgen.io@$SPECGEN_VERSION
+            npm install
+            npm install specgen.io@$SPECGEN_VERSION --registry=https://specgen.jfrog.io/artifactory/api/npm/npm/
             npm install
             npm run specgen
             mkdir -p ./test-results
@@ -164,8 +165,6 @@ commands:
           name: Set up .npmrc
           command: |
             curl --silent  -u$JFROG_USER:$JFROG_PASS https://<< parameters.jfrog-server-url >>/artifactory/api/npm/auth | awk '{print "//<< parameters.jfrog-server-url >>/artifactory/api/npm/<< parameters.repo-name >>/:" $0}' > ~/.npmrc
-            echo "Here's ~/.npmrc"
-            cat ~/.npmrc
 
 workflows:
   build-test:
