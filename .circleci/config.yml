@@ -58,7 +58,7 @@ jobs:
       SPECGEN_VERSION: << pipeline.parameters.specgen-version >>
     working_directory: ~/test-models-superstruct
     docker:
-      - image: cimg/node:14.15.1
+      - image: cimg/node:16.8.0
     steps:
       - checkout
       - setup-npm:
@@ -81,7 +81,7 @@ jobs:
       SPECGEN_VERSION: << pipeline.parameters.specgen-version >>
     working_directory: ~/test-models-iots
     docker:
-      - image: cimg/node:14.15.1
+      - image: cimg/node:16.8.0
     steps:
       - checkout
       - setup-npm:
