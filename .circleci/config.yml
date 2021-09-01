@@ -61,14 +61,14 @@ jobs:
       - image: cimg/node:16.8.0
     steps:
       - checkout
-      - setup-npm:
+      - setup-npm-auth:
           jfrog-server-url: specgen.jfrog.io
           repo-name: npm
       - run:
           name: Test Superstruct models
           command: |
             cd ./ts-superstruct
-            npm install specgen.io@$SPECGEN_VERSION
+            npm install specgen.io@$SPECGEN_VERSION --registry=https://specgen.jfrog.io/artifactory/api/npm/npm/
             npm install
             npm run specgen
             mkdir -p ./test-results
@@ -84,7 +84,7 @@ jobs:
       - image: cimg/node:16.8.0
     steps:
       - checkout
-      - setup-npm:
+      - setup-npm-auth:
           jfrog-server-url: specgen.jfrog.io
           repo-name: npm
       - run:
@@ -152,7 +152,7 @@ jobs:
             - ~/.ivy2                  
 
 commands:
-  setup-npm:
+  setup-npm-auth:
     parameters:
       jfrog-server-url:
         type: string
@@ -162,8 +162,12 @@ commands:
       - run:
           name: Set up .npmrc
           command: |
-            echo "registry=https://<< parameters.jfrog-server-url >>/artifactory/api/npm/<< parameters.repo-name >>/" > ~/.npmrc
-            curl -u$JFROG_USER:$JFROG_PASS https://<< parameters.jfrog-server-url >>/artifactory/api/npm/auth >> ~/.npmrc
+            export JFROG_NPM_TOKEN=(echo '$JFROG_USER:$JFROG_PASS' | base64)
+            tee --append ~/.npmrc \<<END
+            //<< parameters.jfrog-server-url >>/artifactory/api/npm/<< parameters.repo-name >>/:_auth = $JFROG_NPM_TOKEN
+            //<< parameters.jfrog-server-url >>/artifactory/api/npm/<< parameters.repo-name >>/:always-auth = true
+            //<< parameters.jfrog-server-url >>/artifactory/api/npm/<< parameters.repo-name >>/:email = $JFROG_USER            
+            END
 
 workflows:
   build-test:
