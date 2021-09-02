@@ -3,6 +3,7 @@ package tests
 import (
 	"cloud.google.com/go/civil"
 	"encoding/json"
+	"fmt"
 	"github.com/google/uuid"
 	"github.com/shopspring/decimal"
 	"gotest.tools/v3/assert"
@@ -18,14 +19,13 @@ func TestMessageFields(t *testing.T) {
 
 	jsonStr := `{"field":0}`
 
-	var actualData test_service_models.Message
 	actualJson, err := json.Marshal(data)
 	assert.NilError(t, err)
+	assert.Equal(t, jsonStr, string(actualJson))
 
+	var actualData test_service_models.Message
 	err = json.Unmarshal([]byte(jsonStr), &actualData)
 	assert.NilError(t, err)
-
-	assert.Equal(t, jsonStr, string(actualJson))
 	assert.Equal(t, reflect.DeepEqual(data, actualData), true)
 }
 
@@ -39,14 +39,13 @@ func TestNestedFields(t *testing.T) {
 
 	jsonStr := `{"field":"the string","nested":{"field":"the nested string"}}`
 
-	var actualData test_service_models.Parent
 	actualJson, err := json.Marshal(data)
 	assert.NilError(t, err)
+	assert.Equal(t, jsonStr, string(actualJson))
 
+	var actualData test_service_models.Parent
 	err = json.Unmarshal([]byte(jsonStr), &actualData)
 	assert.NilError(t, err)
-
-	assert.Equal(t, jsonStr, string(actualJson))
 	assert.Equal(t, reflect.DeepEqual(data, actualData), true)
 }
 
@@ -62,14 +61,13 @@ func TestNumericFields(t *testing.T) {
 
 	jsonStr := `{"int_field":0,"long_field":0,"float_field":1.23,"double_field":1.23,"decimal_field":"1.23"}`
 
-	var actualData test_service_models.NumericFields
 	actualJson, err := json.Marshal(data)
 	assert.NilError(t, err)
+	assert.Equal(t, jsonStr, string(actualJson))
 
+	var actualData test_service_models.NumericFields
 	err = json.Unmarshal([]byte(jsonStr), &actualData)
 	assert.NilError(t, err)
-
-	assert.Equal(t, jsonStr, string(actualJson))
 	assert.Equal(t, reflect.DeepEqual(data, actualData), true)
 }
 
@@ -78,7 +76,6 @@ func TestNumericFieldsNegative(t *testing.T) {
 
 	var actualData test_service_models.NumericFields
 	err := json.Unmarshal([]byte(jsonStr), &actualData)
-
 	assert.ErrorContains(t, err, "null")
 }
 
@@ -95,14 +92,13 @@ func TestNonNumericFields(t *testing.T) {
 
 	jsonStr := `{"boolean_field":true,"string_field":"the string","uuid_field":"123e4567-e89b-12d3-a456-426655440000","date_field":"2019-11-30","datetime_field":"2019-11-30T17:45:55"}`
 
-	var actualData test_service_models.NonNumericFields
 	actualJson, err := json.Marshal(data)
 	assert.NilError(t, err)
+	assert.Equal(t, jsonStr, string(actualJson))
 
+	var actualData test_service_models.NonNumericFields
 	err = json.Unmarshal([]byte(jsonStr), &actualData)
 	assert.NilError(t, err)
-
-	assert.Equal(t, jsonStr, string(actualJson))
 	assert.Equal(t, reflect.DeepEqual(data, actualData), true)
 }
 
@@ -111,7 +107,6 @@ func TestNonNumericFieldsNegative(t *testing.T) {
 
 	var actualData test_service_models.NonNumericFields
 	err := json.Unmarshal([]byte(jsonStr), &actualData)
-
 	assert.ErrorContains(t, err, "null")
 }
 
@@ -123,14 +118,13 @@ func TestArrayFields(t *testing.T) {
 
 	jsonStr := `{"int_array_field":[1,2,3],"string_array_field":["one","two","three"]}`
 
-	var actualData test_service_models.ArrayFields
 	actualJson, err := json.Marshal(data)
 	assert.NilError(t, err)
+	assert.Equal(t, jsonStr, string(actualJson))
 
+	var actualData test_service_models.ArrayFields
 	err = json.Unmarshal([]byte(jsonStr), &actualData)
 	assert.NilError(t, err)
-
-	assert.Equal(t, jsonStr, string(actualJson))
 	assert.Equal(t, reflect.DeepEqual(data, actualData), true)
 }
 
@@ -139,7 +133,6 @@ func TestArrayFieldsNegative(t *testing.T) {
 
 	var actualData test_service_models.ArrayFields
 	err := json.Unmarshal([]byte(jsonStr), &actualData)
-
 	assert.ErrorContains(t, err, "null")
 }
 
@@ -151,14 +144,13 @@ func TestMapFields(t *testing.T) {
 
 	jsonStr := `{"int_map_field":{"one":1,"two":2},"string_map_field":{"one":"first","two":"second"}}`
 
-	var actualData test_service_models.MapFields
 	actualJson, err := json.Marshal(data)
 	assert.NilError(t, err)
+	assert.Equal(t, jsonStr, string(actualJson))
 
+	var actualData test_service_models.MapFields
 	err = json.Unmarshal([]byte(jsonStr), &actualData)
 	assert.NilError(t, err)
-
-	assert.Equal(t, jsonStr, string(actualJson))
 	assert.Equal(t, reflect.DeepEqual(data, actualData), true)
 }
 
@@ -167,12 +159,11 @@ func TestMapFieldsNegative(t *testing.T) {
 
 	var actualData test_service_models.MapFields
 	err := json.Unmarshal([]byte(jsonStr), &actualData)
-
 	assert.ErrorContains(t, err, "null")
 }
 
 func TestOptionalFields(t *testing.T) {
-	var optionalInt int = 123
+	var optionalInt = 123
 	var optionalString = "the string"
 	data := test_service_models.OptionalFields{
 		&optionalInt,
@@ -181,14 +172,13 @@ func TestOptionalFields(t *testing.T) {
 
 	jsonStr := `{"int_option_field":123,"string_option_field":"the string"}`
 
-	var actualData test_service_models.OptionalFields
 	actualJson, err := json.Marshal(data)
 	assert.NilError(t, err)
+	assert.Equal(t, jsonStr, string(actualJson))
 
+	var actualData test_service_models.OptionalFields
 	err = json.Unmarshal([]byte(jsonStr), &actualData)
 	assert.NilError(t, err)
-
-	assert.Equal(t, jsonStr, string(actualJson))
 	assert.Equal(t, reflect.DeepEqual(data, actualData), true)
 }
 
@@ -200,14 +190,13 @@ func TestOptionalNil(t *testing.T) {
 
 	jsonStr := `{"int_option_field":null,"string_option_field":null}`
 
-	var actualData test_service_models.OptionalFields
 	actualJson, err := json.Marshal(data)
 	assert.NilError(t, err)
+	assert.Equal(t, jsonStr, string(actualJson))
 
+	var actualData test_service_models.OptionalFields
 	err = json.Unmarshal([]byte(jsonStr), &actualData)
 	assert.NilError(t, err)
-
-	assert.Equal(t, jsonStr, string(actualJson))
 	assert.Equal(t, reflect.DeepEqual(data, actualData), true)
 }
 
@@ -218,14 +207,13 @@ func TestRawJsonField(t *testing.T) {
 
 	jsonStr := `{"json_field":{"the_array":[1,"some string"],"the_object":{"the_bool":true,"the_string":"some value"},"the_scalar":123}}`
 
-	var actualData test_service_models.RawJsonField
 	actualJson, err := json.Marshal(data)
 	assert.NilError(t, err)
+	assert.Equal(t, jsonStr, string(actualJson))
 
+	var actualData test_service_models.RawJsonField
 	err = json.Unmarshal([]byte(jsonStr), &actualData)
 	assert.NilError(t, err)
-
-	assert.Equal(t, jsonStr, string(actualJson))
 	assert.Equal(t, reflect.DeepEqual(data, actualData), true)
 }
 
@@ -234,7 +222,6 @@ func TestRawJsonFieldNegative(t *testing.T) {
 
 	var actualData test_service_models.RawJsonField
 	err := json.Unmarshal([]byte(jsonStr), &actualData)
-
 	assert.ErrorContains(t, err, "null")
 }
 
@@ -247,14 +234,13 @@ func TestOrderCreated(t *testing.T) {
 
 	jsonStr := `{"id":"58d5e212-165b-4ca0-909b-c86b9cee0111","sku":"SNI/01/136/0500","quantity":3}`
 
-	var actualData test_service_models.OrderCreated
 	actualJson, err := json.Marshal(data)
 	assert.NilError(t, err)
+	assert.Equal(t, jsonStr, string(actualJson))
 
+	var actualData test_service_models.OrderCreated
 	err = json.Unmarshal([]byte(jsonStr), &actualData)
 	assert.NilError(t, err)
-
-	assert.Equal(t, jsonStr, string(actualJson))
 	assert.Equal(t, reflect.DeepEqual(data, actualData), true)
 }
 
@@ -263,7 +249,6 @@ func TestOrderCreatedNegative(t *testing.T) {
 
 	var actualData test_service_models.OrderCreated
 	err := json.Unmarshal([]byte(jsonStr), &actualData)
-
 	assert.ErrorContains(t, err, "null")
 }
 
@@ -274,14 +259,13 @@ func TestEnumFields(t *testing.T) {
 
 	jsonStr := `{"enum_field":"SECOND_CHOICE"}`
 
-	var actualData test_service_models.EnumFields
 	actualJson, err := json.Marshal(data)
 	assert.NilError(t, err)
+	assert.Equal(t, jsonStr, string(actualJson))
 
+	var actualData test_service_models.EnumFields
 	err = json.Unmarshal([]byte(jsonStr), &actualData)
 	assert.NilError(t, err)
-
-	assert.Equal(t, jsonStr, string(actualJson))
 	assert.Equal(t, reflect.DeepEqual(data, actualData), true)
 }
 
@@ -289,28 +273,44 @@ func TestEnumFieldsNegative(t *testing.T) {
 	jsonStr := `{"enum_field":"gfgnfg"}`
 
 	var actualData test_service_models.EnumFields
-
 	err := json.Unmarshal([]byte(jsonStr), &actualData)
 	assert.ErrorContains(t, err, "gfgnfg")
 }
 
 func TestOneOfFields(t *testing.T) {
 	data := test_service_models.OrderEvent{
-		nil,
-		&test_service_models.OrderChanged{uuid.MustParse("58d5e212-165b-4ca0-909b-c86b9cee0111"), 3},
-		nil,
+		Changed: &test_service_models.OrderChanged{uuid.MustParse("58d5e212-165b-4ca0-909b-c86b9cee0111"), 3},
 	}
 
 	jsonStr := `{"changed":{"id":"58d5e212-165b-4ca0-909b-c86b9cee0111","quantity":3}}`
 
+	actualJson, err := json.Marshal(data)
+	assert.NilError(t, err)
+	assert.Equal(t, jsonStr, string(actualJson))
+
 	var actualData test_service_models.OrderEvent
+	err = json.Unmarshal([]byte(jsonStr), &actualData)
+
+	fmt.Println("data:", *data.Changed)
+	fmt.Println("actualData:", *actualData.Changed)
+
+	assert.NilError(t, err)
+	assert.Equal(t, reflect.DeepEqual(data, actualData), true)
+}
+
+func TestDiscriminatedOneOfFields(t *testing.T) {
+	data := test_service_models.OrderEventDiscriminated{
+		Changed: &test_service_models.OrderChanged{uuid.MustParse("58d5e212-165b-4ca0-909b-c86b9cee0111"), 3},
+	}
+
+	jsonStr := `{"_type":"changed","id":"58d5e212-165b-4ca0-909b-c86b9cee0111","quantity":3}`
 
 	actualJson, err := json.Marshal(data)
 	assert.NilError(t, err)
+	assert.Equal(t, jsonStr, string(actualJson))
 
+	var actualData test_service_models.OrderEventDiscriminated
 	err = json.Unmarshal([]byte(jsonStr), &actualData)
 	assert.NilError(t, err)
-
-	assert.Equal(t, jsonStr, string(actualJson))
 	assert.Equal(t, reflect.DeepEqual(data, actualData), true)
 }
