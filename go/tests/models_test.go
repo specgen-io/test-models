@@ -3,7 +3,6 @@ package tests
 import (
 	"cloud.google.com/go/civil"
 	"encoding/json"
-	"fmt"
 	"github.com/google/uuid"
 	"github.com/shopspring/decimal"
 	"gotest.tools/v3/assert"
@@ -290,10 +289,6 @@ func TestOneOfFields(t *testing.T) {
 
 	var actualData test_service_models.OrderEvent
 	err = json.Unmarshal([]byte(jsonStr), &actualData)
-
-	fmt.Println("data:", *data.Changed)
-	fmt.Println("actualData:", *actualData.Changed)
-
 	assert.NilError(t, err)
 	assert.Equal(t, reflect.DeepEqual(data, actualData), true)
 }
