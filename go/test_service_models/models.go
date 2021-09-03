@@ -2,7 +2,7 @@ package test_service_models
 
 import (
 	"cloud.google.com/go/civil"
-	"strings"
+	"fmt"
 )
 import "errors"
 import "encoding/json"
@@ -140,38 +140,39 @@ func (u OrderEventDiscriminated) MarshalJSON() ([]byte, error) {
 }
 
 func (u *OrderEventDiscriminated) UnmarshalJSON(data []byte) error {
-	if strings.Contains(string(data), "created") {
-		var union struct {
-			Discriminator string `json:"_type"`
-			*OrderCreated
-		}
-		err := json.Unmarshal(data, &union)
-		if err != nil {
-			return err
-		}
-		u.Created = union.OrderCreated
+	var discriminator struct {
+		Value string `json:"_type"`
 	}
-	if strings.Contains(string(data), "changed") {
-		var union struct {
-			Discriminator string `json:"_type"`
-			*OrderChanged
-		}
-		err := json.Unmarshal(data, &union)
-		if err != nil {
-			return err
-		}
-		u.Changed = union.OrderChanged
+	err := json.Unmarshal(data, &discriminator)
+	if err != nil {
+		return err
 	}
-	if strings.Contains(string(data), "canceled") {
-		var union struct {
-			Discriminator string `json:"_type"`
-			*OrderCanceled
-		}
-		err := json.Unmarshal(data, &union)
+
+	switch discriminator.Value {
+	case "created":
+		unionCase := OrderCreated{}
+		err := json.Unmarshal(data, &unionCase)
 		if err != nil {
 			return err
 		}
-		u.Canceled = union.OrderCanceled
+		u.Created = &unionCase
+	case "changed":
+		unionCase := OrderChanged{}
+		err := json.Unmarshal(data, &unionCase)
+		if err != nil {
+			return err
+		}
+		u.Changed = &unionCase
+	case "canceled":
+		unionCase := OrderCanceled{}
+		err := json.Unmarshal(data, &unionCase)
+		if err != nil {
+			return err
+		}
+		u.Canceled = &unionCase
+	default:
+		msg := fmt.Sprintf("Unexpected union discriminator field _type value: %s", discriminator.Value)
+		return errors.New(msg)
 	}
 	return nil
 }
