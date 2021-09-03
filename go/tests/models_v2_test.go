@@ -15,13 +15,12 @@ func TestMessageV2(t *testing.T) {
 
 	jsonStr := `{"field":"the string"}`
 
-	var actualData v2.Message
 	actualJson, err := json.Marshal(data)
 	assert.NilError(t, err)
+	assert.Equal(t, jsonStr, string(actualJson))
 
+	var actualData v2.Message
 	err = json.Unmarshal([]byte(jsonStr), &actualData)
 	assert.NilError(t, err)
-
-	assert.Equal(t, jsonStr, string(actualJson))
 	assert.Equal(t, reflect.DeepEqual(data, actualData), true)
 }
