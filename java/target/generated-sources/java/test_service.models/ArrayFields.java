@@ -41,8 +41,8 @@ public class ArrayFields {
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (!(o instanceof ArrayFields)) return false;
-		ArrayFields arrayFields = (ArrayFields) o;
-		return Arrays.equals(getIntArrayField(), arrayFields.getIntArrayField()) && Arrays.equals(getStringArrayField(), arrayFields.getStringArrayField());
+		ArrayFields that = (ArrayFields) o;
+		return Arrays.equals(getIntArrayField(), that.getIntArrayField()) && Arrays.equals(getStringArrayField(), that.getStringArrayField());
 	}
 
 	@Override
@@ -54,6 +54,6 @@ public class ArrayFields {
 
 	@Override
 	public String toString() {
-		return String.format("ArrayFields{intArrayField=%s, stringArrayField=%s}", Arrays.toString(intArrayField), Arrays.toString(stringArrayField));
+		return String.format("ArrayFields{intArrayField=%s, stringArrayField=%s}", intArrayField, stringArrayField);
 	}
 }
