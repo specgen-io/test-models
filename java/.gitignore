@@ -1,7 +1,4 @@
 *.iml
 .idea/
-target/*
-!target/generated-sources
-target/generated-sources/*
-!target/generated-sources/java
+target/
 test-results/
