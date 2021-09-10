@@ -42,7 +42,7 @@ public class OrderChanged {
 		if (this == o) return true;
 		if (!(o instanceof OrderChanged)) return false;
 		OrderChanged that = (OrderChanged) o;
-		return getQuantity() == that.getQuantity() && Objects.equals(getId(), that.getId());
+		return Objects.equals(getId(), that.getId()) && getQuantity() == that.getQuantity();
 	}
 
 	@Override

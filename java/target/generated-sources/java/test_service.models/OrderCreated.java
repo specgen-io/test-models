@@ -53,7 +53,7 @@ public class OrderCreated {
 		if (this == o) return true;
 		if (!(o instanceof OrderCreated)) return false;
 		OrderCreated that = (OrderCreated) o;
-		return getQuantity() == that.getQuantity() && Objects.equals(getId(), that.getId()) && Objects.equals(getSku(), that.getSku());
+		return Objects.equals(getId(), that.getId()) && Objects.equals(getSku(), that.getSku()) && getQuantity() == that.getQuantity();
 	}
 
 	@Override

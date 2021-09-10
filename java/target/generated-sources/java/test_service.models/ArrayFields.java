@@ -54,6 +54,6 @@ public class ArrayFields {
 
 	@Override
 	public String toString() {
-		return String.format("ArrayFields{intArrayField=%s, stringArrayField=%s}", intArrayField, stringArrayField);
+		return String.format("ArrayFields{intArrayField=%s, stringArrayField=%s}", Arrays.toString(intArrayField), Arrays.toString(stringArrayField));
 	}
 }
