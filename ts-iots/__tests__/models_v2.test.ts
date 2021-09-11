@@ -1,9 +1,9 @@
-import * as t from '../io-ts'
-import { checkEncodeDecode } from '../util'
+import * as t from '../test-service/io-ts'
+import { checkEncodeDecode } from './util'
 
 import {
   Message, TMessage
-} from '../models_v2';
+} from '../test-service/models_v2';
 
 describe('v2 object', function() {
   let decoded: Message = {field: 'the string'}
