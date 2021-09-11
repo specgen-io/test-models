@@ -1,5 +1,5 @@
-import * as t from '../superstruct'
-import { checkEncodeDecode } from '../util'
+import * as t from '../test-service/superstruct'
+import { checkEncodeDecode } from './util'
 
 import {
   TMessage,
@@ -24,7 +24,7 @@ import {
   TOrderEvent,
   OrderEventDiscriminated,
   TOrderEventDiscriminated,
-} from '../models';
+} from '../test-service/models';
 
 describe('object', function() {
   let decoded: Message = {field: 123}

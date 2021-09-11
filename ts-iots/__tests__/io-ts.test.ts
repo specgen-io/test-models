@@ -1,5 +1,5 @@
-import * as t from '../io-ts'
-import { checkEncodeDecode } from '../util'
+import * as t from '../test-service/io-ts'
+import { checkEncodeDecode } from './util'
 
 const TDefaultedField = t.type({
     theDefaulted: t.withDefault(t.string, "the default value"),
