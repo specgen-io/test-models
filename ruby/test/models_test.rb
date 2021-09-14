@@ -99,10 +99,16 @@ module TestService
       check_serialization(RawJsonField, data, json)
     end
 
-    def test_oneof
-      data = OrderChanged.new(id: "58d5e212-165b-4ca0-909b-c86b9cee0111", quantity: 3)
+    def test_oneof_wrapper
+      data = OrderEvent.new(changed: OrderChanged.new(id: "58d5e212-165b-4ca0-909b-c86b9cee0111", quantity: 3))
       json = '{"changed":{"id":"58d5e212-165b-4ca0-909b-c86b9cee0111","quantity":3}}'
       check_serialization(OrderEvent, data, json)
+    end
+
+    def test_oneof_discriminator
+      data = OrderEventDiscriminated.new(changed: OrderChanged.new(id: "58d5e212-165b-4ca0-909b-c86b9cee0111", quantity: 3))
+      json = '{"id":"58d5e212-165b-4ca0-909b-c86b9cee0111","quantity":3,"_type":"changed"}'
+      check_serialization(OrderEventDiscriminated, data, json)
     end
 
     def test_object_camel_case
