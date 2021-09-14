@@ -108,4 +108,10 @@ class ModelsSpec extends FlatSpec {
     val jsonStr = """{"changed":{"id":"58d5e212-165b-4ca0-909b-c86b9cee0111","quantity":3}}"""
     check(data, jsonStr)
   }
+
+  "oneOf discriminator" should "be serializable" in {
+    val data: OrderEventDiscriminated = OrderEventDiscriminated.Changed(OrderChanged(UUID.fromString("58d5e212-165b-4ca0-909b-c86b9cee0111"), 3))
+    val jsonStr = """{"_type":"changed","id":"58d5e212-165b-4ca0-909b-c86b9cee0111","quantity":3}"""
+    check(data, jsonStr)
+  }
 }
