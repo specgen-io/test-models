@@ -4,12 +4,12 @@ import (
 	"encoding/json"
 	"gotest.tools/v3/assert"
 	"reflect"
-	"test-models/test_service_models/v2"
+	"test-models/spec/v2/models"
 	"testing"
 )
 
 func TestMessageV2(t *testing.T) {
-	data := v2.Message{
+	data := models.Message{
 		"the string",
 	}
 
@@ -19,7 +19,7 @@ func TestMessageV2(t *testing.T) {
 	assert.NilError(t, err)
 	assert.Equal(t, jsonStr, string(actualJson))
 
-	var actualData v2.Message
+	var actualData models.Message
 	err = json.Unmarshal([]byte(jsonStr), &actualData)
 	assert.NilError(t, err)
 	assert.Equal(t, reflect.DeepEqual(data, actualData), true)

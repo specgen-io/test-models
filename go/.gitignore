@@ -1,4 +1,4 @@
 .idea/
 test-results/
 vendor/
-test_service_models/
+spec/
