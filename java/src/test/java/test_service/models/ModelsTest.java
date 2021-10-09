@@ -64,7 +64,7 @@ public class ModelsTest {
 	@Test
 	public void jsonEnumTest() throws IOException {
 		EnumFields data = new EnumFields(Choice.SECOND_CHOICE);
-		String jsonStr = "{'enum_field':'SECOND_CHOICE'}";
+		String jsonStr = "{'enum_field':'Two'}";
 		check(data, jsonStr, EnumFields.class);
 
 		String expected = "EnumFields{enumField=SECOND_CHOICE}";
