@@ -256,7 +256,7 @@ func TestEnumFields(t *testing.T) {
 		models.ChoiceSecondChoice,
 	}
 
-	jsonStr := `{"enum_field":"SECOND_CHOICE"}`
+	jsonStr := `{"enum_field":"Two"}`
 
 	actualJson, err := json.Marshal(data)
 	assert.NilError(t, err)

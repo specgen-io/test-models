@@ -83,7 +83,7 @@ module TestService
 
     def test_enum
       data = EnumFields.new(enum_field: Choice::second_choice)
-      json = '{"enum_field":"SECOND_CHOICE"}'
+      json = '{"enum_field":"Two"}'
       check_serialization(EnumFields, data, json)
     end
 

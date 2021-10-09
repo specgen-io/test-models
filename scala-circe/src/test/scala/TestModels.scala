@@ -84,7 +84,7 @@ class ModelsSpec extends FlatSpec {
 
   "enum field" should "be serializable" in {
     val data = EnumFields(enumField = Choice.SecondChoice)
-    val jsonStr = """{"enum_field":"SECOND_CHOICE"}"""
+    val jsonStr = """{"enum_field":"Two"}"""
     check(data, jsonStr)
   }
 
