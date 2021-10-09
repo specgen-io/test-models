@@ -37,7 +37,7 @@ describe('object', function() {
 
 describe('enum fields', function() {
   let decoded: EnumFields = {enum_field: Choice.THIRD_CHOICE}
-  let encoded = {'enum_field': 'THIRD_CHOICE'}
+  let encoded = {'enum_field': 'Three'}
   checkEncodeDecode(TEnumFields, decoded, encoded)
   it('decode fail', function() {
     expect(() => t.decode(TEnumFields, {})).toThrowError('Decoding failed')
