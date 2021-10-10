@@ -17,13 +17,13 @@ public class ModelsTest {
 
 	public <T> void check(T data, String jsonStr, Class<T> tClass) throws IOException {
 		ObjectMapper objectMapper = new ObjectMapper();
-		Jsoner.setupObjectMapper(objectMapper);
+		Json.setupObjectMapper(objectMapper);
 
-		String actualJson = Jsoner.serialize(objectMapper, data);
+		String actualJson = objectMapper.writeValueAsString(data);
 		jsonStr = fixQuotes(jsonStr);
 		Assert.assertEquals(jsonStr, actualJson);
 
-		T actualData = Jsoner.deserialize(objectMapper, jsonStr, tClass);
+		T actualData = objectMapper.readValue(jsonStr, tClass);
 		Assert.assertEquals(actualData, data);
 	}
 
