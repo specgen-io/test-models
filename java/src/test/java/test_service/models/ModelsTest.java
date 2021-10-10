@@ -17,6 +17,7 @@ public class ModelsTest {
 
 	public <T> void check(T data, String jsonStr, Class<T> tClass) throws IOException {
 		ObjectMapper objectMapper = new ObjectMapper();
+		Jsoner.setupObjectMapper(objectMapper);
 
 		String actualJson = Jsoner.serialize(objectMapper, data);
 		jsonStr = fixQuotes(jsonStr);
