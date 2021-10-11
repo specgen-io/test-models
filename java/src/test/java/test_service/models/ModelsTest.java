@@ -11,13 +11,18 @@ import java.util.*;
 
 public class ModelsTest {
 
+	public static ObjectMapper createObjectMapper() {
+		ObjectMapper objectMapper = new ObjectMapper();
+		Json.setupObjectMapper(objectMapper);
+		return  objectMapper;
+	}
+
 	public static String fixQuotes(String jsonStr) {
 		return jsonStr.replaceAll("'", "\"");
 	}
 
 	public <T> void check(T data, String jsonStr, Class<T> tClass) throws IOException {
-		ObjectMapper objectMapper = new ObjectMapper();
-		Json.setupObjectMapper(objectMapper);
+		ObjectMapper objectMapper = createObjectMapper();
 
 		String actualJson = objectMapper.writeValueAsString(data);
 		jsonStr = fixQuotes(jsonStr);
@@ -131,7 +136,8 @@ public class ModelsTest {
 	@Test
 	public void jsonRawJsonFieldTest() throws IOException {
 		String jsonField = fixQuotes("{'the_array':[1,'some string'],'the_object':{'the_bool':true,'the_string':'some value'},'the_scalar':123}");
-		RawJsonField data = new RawJsonField(jsonField);
+		JsonNode node = createObjectMapper().readTree(jsonField);
+		RawJsonField data = new RawJsonField(node);
 		String jsonStr = "{'json_field':{'the_array':[1,'some string'],'the_object':{'the_bool':true,'the_string':'some value'},'the_scalar':123}}";
 		check(data, jsonStr, RawJsonField.class);
 
