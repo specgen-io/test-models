@@ -2,6 +2,7 @@ package test_service.models;
 
 import com.fasterxml.jackson.databind.*;
 import org.junit.Assert;
+import static org.junit.Assert.*;
 import org.junit.Test;
 
 import java.io.*;
@@ -48,16 +49,6 @@ public class ModelsTest {
 	}
 
 	@Test
-	public void jsonNestedTest() throws IOException {
-		Nested data = new Nested("the string");
-		String jsonStr = "{'field':'the string'}";
-		check(data, jsonStr, Nested.class);
-
-		String expected = "Nested{field=the string}";
-		checkToString(data, expected);
-	}
-
-	@Test
 	public void jsonParentTest() throws IOException {
 		Parent data = new Parent("the string", new Nested("the nested string"));
 		String jsonStr = "{'field':'the string','nested':{'field':'the nested string'}}";
@@ -65,6 +56,24 @@ public class ModelsTest {
 
 		String expected = "Parent{field=the string, nested=Nested{field=the nested string}}";
 		checkToString(data, expected);
+	}
+
+	@Test
+	public void jsonTestNotNullableObjectField() throws IOException {
+		var exception = assertThrows(JsonMappingException.class, () -> {
+			var jsonStr = fixQuotes("{'field':'the string','nested':null}");
+			createObjectMapper().readValue(jsonStr, Parent.class);
+		});
+		assertNotNull(exception);
+	}
+
+	@Test
+	public void jsonTestNotNullableStringField() throws IOException {
+		var exception = assertThrows(JsonMappingException.class, () -> {
+			var jsonStr = fixQuotes("{'field':null}");
+			createObjectMapper().readValue(jsonStr, Nested.class);
+		});
+		assertNotNull(exception);
 	}
 
 	@Test
