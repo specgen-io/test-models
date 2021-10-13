@@ -1,5 +1,6 @@
 package test_service.models;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.*;
 import org.junit.Assert;
 import static org.junit.Assert.*;
@@ -162,6 +163,21 @@ public class ModelsTest {
 
 		String expected = "OrderCreated{id=58d5e212-165b-4ca0-909b-c86b9cee0111, sku=SNI/01/136/0500, quantity=3}";
 		checkToString(data, expected);
+	}
+
+	@Test
+	public void jsonOneOfNotNullItemTest() {
+		assertThrows(IllegalArgumentException.class, () -> {
+			new OrderEventCanceled(null);
+		});
+	}
+
+	@Test
+	public void jsonOneOfNotNullItem() {
+		assertThrows(JsonParseException.class, () -> {
+			String jsonStr = "{'canceled':null}";
+			createObjectMapper().readValue(jsonStr, OrderEvent.class);
+		});
 	}
 
 	@Test
