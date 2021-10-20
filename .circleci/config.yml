@@ -6,7 +6,7 @@ orbs:
 parameters:
   specgen-version:
     type: string
-    default: 2.0.736
+    default: 2.0.782
   specgen-version-major:
     type: string
     default: v2
@@ -65,6 +65,9 @@ jobs:
           jfrog-server-url: specgen.jfrog.io
           repo-name: npm
           scope: specgen.io
+      - restore_cache:
+          keys:
+            - cache-{{ checksum "./ts-superstruct/package.json" }}
       - run:
           name: Test Superstruct models
           command: |
@@ -75,6 +78,10 @@ jobs:
             mkdir -p ./test-results
             export JEST_JUNIT_OUTPUT_DIR=./test-results
             npm run test
+      - save_cache:
+          key: cache-{{ checksum "./ts-superstruct/package.json" }}
+          paths:
+            - ~/test-models-superstruct/ts-superstruct/node_modules 
       - store_test_results:
           path: ./ts-superstruct/test-results
   ts-iots:
@@ -89,6 +96,9 @@ jobs:
           jfrog-server-url: specgen.jfrog.io
           repo-name: npm
           scope: specgen.io
+      - restore_cache:
+          keys:
+            - cache-{{ checksum "./ts-iots/package.json" }}
       - run:
           name: Test Iots models
           command: |
@@ -99,6 +109,10 @@ jobs:
             mkdir -p ./test-results
             export JEST_JUNIT_OUTPUT_DIR=./test-results
             npm run test
+      - save_cache:
+          key: cache-{{ checksum "./ts-iots/package.json" }}
+          paths:
+            - ~/test-models-iots/ts-iots/node_modules 
       - store_test_results:
           path: ./ts-iots/test-results         
   scala-circe:
