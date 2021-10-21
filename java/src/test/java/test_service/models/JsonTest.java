@@ -39,6 +39,14 @@ public class JsonTest {
 	}
 
 	@Test
+	public void objectModelMissingValueTypeField() throws IOException {
+		var exception = assertThrows(JsonMappingException.class, () -> {
+			createObjectMapper().readValue("{}", Message.class);
+		});
+		assertNotNull(exception);
+	}
+
+	@Test
 	public void nestedObject() throws IOException {
 		Parent data = new Parent("the string", new Nested("the nested string"));
 		String jsonStr = "{'field':'the string','nested':{'field':'the nested string'}}";
@@ -105,6 +113,13 @@ public class JsonTest {
 	public void optionalTypes() throws IOException {
 		OptionalFields data = new OptionalFields(123, "the string");
 		String jsonStr = "{'int_option_field':123,'string_option_field':'the string'}";
+		check(data, jsonStr, OptionalFields.class);
+	}
+
+	@Test
+	public void optionalTypesMissingFields() throws IOException {
+		var data = new OptionalFields(null, null);
+		String jsonStr = "{}";
 		check(data, jsonStr, OptionalFields.class);
 	}
 
