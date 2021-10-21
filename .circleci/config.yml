@@ -39,6 +39,9 @@ jobs:
       - checkout
       - artifactory/setup-bundler:
           jfrog-server-url: specgen.jfrog.io
+      - restore_cache:
+          keys:
+            - cache-{{ checksum "./ruby/Gemfile.lock" }}
       - run:
           name: Test Ruby models
           command: |
@@ -51,6 +54,10 @@ jobs:
             END
             bundle install
             rake
+      - save_cache:
+          key: cache-{{ checksum "./ruby/Gemfile.lock" }}
+          paths:
+            - ~/test-models-ruby/ruby/vendor/bundle
       - store_test_results:
           path: ./ruby/test-results
   ts-superstruct:
