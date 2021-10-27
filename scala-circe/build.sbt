@@ -7,7 +7,7 @@ enablePlugins(SpecCirce)
 
 specFile := file("./../spec.yaml")
 
-libraryDependencies ++= specSttpDependencies ++ Seq(
+libraryDependencies ++= specCirceDependencies ++ Seq(
   "org.scalatest" %% "scalatest" % "3.0.8" % Test
 )
 
