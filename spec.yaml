@@ -5,7 +5,8 @@ version: 1
 v2:
   models:
     Message:
-      field: string
+      object:
+        field: string
 
 
 models:
