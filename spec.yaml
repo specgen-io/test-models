@@ -18,7 +18,6 @@ models:
     object:
       snake_case: string
       camelCase: string
-      kebab-case: string
 
   Parent:
     object:
