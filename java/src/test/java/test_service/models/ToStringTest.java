@@ -22,8 +22,8 @@ public class ToStringTest {
 
     @Test
     public void jsonParentTest() {
-        Parent data = new Parent("the string", new Nested("the nested string"));
-        String expected = "Parent{field=the string, nested=Nested{field=the nested string}}";
+        Parent data = new Parent("the string", new Message(123));
+        String expected = "Parent{field=the string, nested=Message{field=123}}";
         assertEquals(data.toString(), expected);
     }
 
@@ -98,7 +98,7 @@ public class ToStringTest {
 
     @Test
     public void jsonOneOfWrapperTest() {
-        OrderEvent data = new OrderEventCanceled(new OrderCanceled(UUID.fromString("123e4567-e89b-12d3-a456-426655440000")));
+        OrderEventWrapper data = new OrderEventWrapperCanceled(new OrderCanceled(UUID.fromString("123e4567-e89b-12d3-a456-426655440000")));
         String expected = "OrderCanceled{data=OrderCanceled{id=123e4567-e89b-12d3-a456-426655440000}}";
         String dataStr = data.toString();
         assertEquals(dataStr, expected);
@@ -106,7 +106,7 @@ public class ToStringTest {
 
     @Test
     public void jsonOneOfDiscriminatorTest() {
-        OrderEventDiscriminated data = new OrderEventDiscriminatedCanceled(new OrderCanceled(UUID.fromString("123e4567-e89b-12d3-a456-426655440000")));
+        OrderEventDiscriminator data = new OrderEventDiscriminatorCanceled(new OrderCanceled(UUID.fromString("123e4567-e89b-12d3-a456-426655440000")));
         String expected = "OrderCanceled{data=OrderCanceled{id=123e4567-e89b-12d3-a456-426655440000}}";
         String dataStr = data.toString();
         assertEquals(dataStr, expected);
