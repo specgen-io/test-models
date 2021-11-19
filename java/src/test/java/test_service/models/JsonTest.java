@@ -39,6 +39,13 @@ public class JsonTest {
 	}
 
 	@Test
+	public void objectModelFieldCases() throws IOException {
+		MessageCases data = new MessageCases("snake_case value", "camelCase value");
+		String jsonStr = "{'snake_case':'snake_case value','camelCase':'camelCase value'}";
+		check(data, jsonStr, MessageCases.class);
+	}
+	
+	@Test
 	public void objectModelMissingValueTypeField() throws IOException {
 		var exception = assertThrows(JsonMappingException.class, () -> {
 			createObjectMapper().readValue("{}", Message.class);
@@ -48,8 +55,8 @@ public class JsonTest {
 
 	@Test
 	public void nestedObject() throws IOException {
-		Parent data = new Parent("the string", new Nested("the nested string"));
-		String jsonStr = "{'field':'the string','nested':{'field':'the nested string'}}";
+		Parent data = new Parent("the string", new Message(123));
+		String jsonStr = "{'field':'the string','nested':{'field':123}}";
 		check(data, jsonStr, Parent.class);
 	}
 
@@ -58,15 +65,6 @@ public class JsonTest {
 		var exception = assertThrows(JsonMappingException.class, () -> {
 			var jsonStr = fixQuotes("{'field':'the string','nested':null}");
 			createObjectMapper().readValue(jsonStr, Parent.class);
-		});
-		assertNotNull(exception);
-	}
-
-	@Test
-	public void stringFieldNotNull() {
-		var exception = assertThrows(JsonMappingException.class, () -> {
-			var jsonStr = fixQuotes("{'field':null}");
-			createObjectMapper().readValue(jsonStr, Nested.class);
 		});
 		assertNotNull(exception);
 	}
@@ -141,23 +139,23 @@ public class JsonTest {
 
 	@Test
 	public void oneOfWrapper() throws IOException {
-		OrderEvent data = new OrderEventCanceled(new OrderCanceled(UUID.fromString("123e4567-e89b-12d3-a456-426655440000")));
+		OrderEventWrapper data = new OrderEventWrapperCanceled(new OrderCanceled(UUID.fromString("123e4567-e89b-12d3-a456-426655440000")));
 		String jsonStr = "{'canceled':{'id':'123e4567-e89b-12d3-a456-426655440000'}}";
-		check(data, jsonStr, OrderEvent.class);
+		check(data, jsonStr, OrderEventWrapper.class);
 	}
 
 	@Test
 	public void oneOfItemNotNull() {
 		assertThrows(JsonParseException.class, () -> {
 			String jsonStr = "{'canceled':null}";
-			createObjectMapper().readValue(jsonStr, OrderEvent.class);
+			createObjectMapper().readValue(jsonStr, OrderEventWrapper.class);
 		});
 	}
 
 	@Test
 	public void jsonOneOfDiscriminatorTest() throws IOException {
-		OrderEventDiscriminated data = new OrderEventDiscriminatedCanceled(new OrderCanceled(UUID.fromString("123e4567-e89b-12d3-a456-426655440000")));
+		OrderEventDiscriminator data = new OrderEventDiscriminatorCanceled(new OrderCanceled(UUID.fromString("123e4567-e89b-12d3-a456-426655440000")));
 		String jsonStr = "{'_type':'canceled','id':'123e4567-e89b-12d3-a456-426655440000'}";
-		check(data, jsonStr, OrderEventDiscriminated.class);
+		check(data, jsonStr, OrderEventDiscriminator.class);
 	}
 }

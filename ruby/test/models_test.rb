@@ -21,6 +21,18 @@ module TestService
       check_serialization(Message, data, json)
     end
 
+    def test_object_nested
+      data = Parent.new(field: "value", nested: Message.new(field: 123))
+      json = '{"field":"value","nested":{"field":123}}'
+      check_serialization(Parent, data, json)
+    end
+    
+    def test_object_field_cases
+      data = MessageCases.new(snake_case: "snake_case value", camelCase: "camelCase value")
+      json = '{"snake_case":"snake_case value","camelCase":"camelCase value"}'
+      check_serialization(MessageCases, data, json)
+    end
+
     def test_numeric
       data = NumericFields.new(
           int_field: 0,
@@ -100,21 +112,15 @@ module TestService
     end
 
     def test_oneof_wrapper
-      data = OrderEvent.new(changed: OrderChanged.new(id: "58d5e212-165b-4ca0-909b-c86b9cee0111", quantity: 3))
+      data = OrderEventWrapper.new(changed: OrderChanged.new(id: "58d5e212-165b-4ca0-909b-c86b9cee0111", quantity: 3))
       json = '{"changed":{"id":"58d5e212-165b-4ca0-909b-c86b9cee0111","quantity":3}}'
-      check_serialization(OrderEvent, data, json)
+      check_serialization(OrderEventWrapper, data, json)
     end
 
     def test_oneof_discriminator
-      data = OrderEventDiscriminated.new(changed: OrderChanged.new(id: "58d5e212-165b-4ca0-909b-c86b9cee0111", quantity: 3))
+      data = OrderEventDiscriminator.new(changed: OrderChanged.new(id: "58d5e212-165b-4ca0-909b-c86b9cee0111", quantity: 3))
       json = '{"id":"58d5e212-165b-4ca0-909b-c86b9cee0111","quantity":3,"_type":"changed"}'
-      check_serialization(OrderEventDiscriminated, data, json)
-    end
-
-    def test_object_camel_case
-      data = MessageCamelCase.new(fieldInt: 0)
-      json = '{"fieldInt":0}'
-      check_serialization(MessageCamelCase, data, json)
+      check_serialization(OrderEventDiscriminator, data, json)
     end
   end
 end
