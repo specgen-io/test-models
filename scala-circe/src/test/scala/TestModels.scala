@@ -22,6 +22,12 @@ class ModelsSpec extends FlatSpec {
     check(Message(123), """{"field":123}""")
   }
 
+  "object fields of different cases" should "be serializable" in {
+    val data = MessageCases("snake_case value", "camelCase value")
+    val jsonStr = """{"snake_case":"snake_case value","camelCase":"camelCase value"}"""
+    check(data, jsonStr)
+  }
+
   "numeric fields" should "be serializable" in {
     val data = NumericFields(
       intField = 0,
@@ -104,13 +110,13 @@ class ModelsSpec extends FlatSpec {
   }
 
   "oneOf" should "be serializable" in {
-    val data: OrderEvent = OrderEvent.Changed(OrderChanged(UUID.fromString("58d5e212-165b-4ca0-909b-c86b9cee0111"), 3))
+    val data: OrderEventWrapper = OrderEventWrapper.Changed(OrderChanged(UUID.fromString("58d5e212-165b-4ca0-909b-c86b9cee0111"), 3))
     val jsonStr = """{"changed":{"id":"58d5e212-165b-4ca0-909b-c86b9cee0111","quantity":3}}"""
     check(data, jsonStr)
   }
 
   "oneOf discriminator" should "be serializable" in {
-    val data: OrderEventDiscriminated = OrderEventDiscriminated.Changed(OrderChanged(UUID.fromString("58d5e212-165b-4ca0-909b-c86b9cee0111"), 3))
+    val data: OrderEventDiscriminator = OrderEventDiscriminator.Changed(OrderChanged(UUID.fromString("58d5e212-165b-4ca0-909b-c86b9cee0111"), 3))
     val jsonStr = """{"_type":"changed","id":"58d5e212-165b-4ca0-909b-c86b9cee0111","quantity":3}"""
     check(data, jsonStr)
   }
