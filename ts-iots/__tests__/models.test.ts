@@ -9,7 +9,6 @@ import {
   TEnumFields,
   Parent,
   TParent,
-  Nested,
   NumericFields,
   TNumericFields,
   NonNumericFields,
@@ -20,10 +19,10 @@ import {
   TMapFields,
   OptionalFields,
   TOptionalFields,
-  OrderEvent,
-  TOrderEvent,
-  OrderEventDiscriminated,
-  TOrderEventDiscriminated
+  OrderEventWrapper,
+  TOrderEventWrapper,
+  OrderEventDiscriminator,
+  TOrderEventDiscriminator
 } from '../test-service/models';
 
 describe('object', function() {
@@ -47,11 +46,11 @@ describe('enum fields', function() {
 describe('nested types', function() {
   let decoded: Parent = {
     'field': 'the string',
-    'nested': {'field': "the nested string"}
+    'nested': {'field': 123}
   }
   let encoded = {
     'field': 'the string',
-    'nested': {'field': "the nested string"}
+    'nested': {'field': 123}
   }
   checkEncodeDecode(TParent, decoded, encoded)
   it('decode fail', function() {
@@ -154,19 +153,19 @@ describe('optional fields missing', function() {
 });
 
 describe('oneof types', function() {
-  let decoded: OrderEvent = { changed: { id: '123e4567-e89b-12d3-a456-426655440000', quantity: 123 } }
+  let decoded: OrderEventWrapper = { changed: { id: '123e4567-e89b-12d3-a456-426655440000', quantity: 123 } }
   let encoded = { changed: {id: '123e4567-e89b-12d3-a456-426655440000', quantity: 123} }
-  checkEncodeDecode(TOrderEvent, decoded, encoded)
+  checkEncodeDecode(TOrderEventWrapper, decoded, encoded)
   it('decode breaks', function() {
-    expect(() => t.decode(TOrderEvent, { created: {} })).toThrowError('Decoding failed');
+    expect(() => t.decode(TOrderEventWrapper, { created: {} })).toThrowError('Decoding failed');
   })
 });
 
 describe('oneof type - discriminated', function() {
-  let decoded: OrderEventDiscriminated = { _type: 'changed', id: '123e4567-e89b-12d3-a456-426655440000', quantity: 123 }
+  let decoded: OrderEventDiscriminator = { _type: 'changed', id: '123e4567-e89b-12d3-a456-426655440000', quantity: 123 }
   let encoded = { _type: 'changed', id: '123e4567-e89b-12d3-a456-426655440000', quantity: 123 }
-  checkEncodeDecode(TOrderEventDiscriminated, decoded, encoded)
+  checkEncodeDecode(TOrderEventDiscriminator, decoded, encoded)
   it('decode breaks', function() {
-    expect(() => t.decode(TOrderEventDiscriminated, { _type: 'changed' })).toThrowError('Decoding failed');
+    expect(() => t.decode(TOrderEventDiscriminator, { _type: 'changed' })).toThrowError('Decoding failed');
   })
 });

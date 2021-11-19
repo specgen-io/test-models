@@ -28,15 +28,33 @@ func TestMessageFields(t *testing.T) {
 	assert.Equal(t, reflect.DeepEqual(data, actualData), true)
 }
 
+func TestMessageCasesFields(t *testing.T) {
+	data := models.MessageCases{
+		"the snake_case field",
+		"the camelCase field",
+	}
+
+	jsonStr := `{"snake_case":"the snake_case field","camelCase":"the camelCase field"}`
+
+	actualJson, err := json.Marshal(data)
+	assert.NilError(t, err)
+	assert.Equal(t, jsonStr, string(actualJson))
+
+	var actualData models.MessageCases
+	err = json.Unmarshal([]byte(jsonStr), &actualData)
+	assert.NilError(t, err)
+	assert.Equal(t, reflect.DeepEqual(data, actualData), true)
+}
+
 func TestNestedFields(t *testing.T) {
 	data := models.Parent{
 		"the string",
-		models.Nested{
-			"the nested string",
+		models.Message{
+			123,
 		},
 	}
 
-	jsonStr := `{"field":"the string","nested":{"field":"the nested string"}}`
+	jsonStr := `{"field":"the string","nested":{"field":123}}`
 
 	actualJson, err := json.Marshal(data)
 	assert.NilError(t, err)
@@ -277,7 +295,7 @@ func TestEnumFieldsNegative(t *testing.T) {
 }
 
 func TestOneOfFields(t *testing.T) {
-	data := models.OrderEvent{
+	data := models.OrderEventWrapper{
 		Changed: &models.OrderChanged{uuid.MustParse("58d5e212-165b-4ca0-909b-c86b9cee0111"), 3},
 	}
 
@@ -287,14 +305,14 @@ func TestOneOfFields(t *testing.T) {
 	assert.NilError(t, err)
 	assert.Equal(t, jsonStr, string(actualJson))
 
-	var actualData models.OrderEvent
+	var actualData models.OrderEventWrapper
 	err = json.Unmarshal([]byte(jsonStr), &actualData)
 	assert.NilError(t, err)
 	assert.Equal(t, reflect.DeepEqual(data, actualData), true)
 }
 
 func TestDiscriminatedOneOfFields(t *testing.T) {
-	data := models.OrderEventDiscriminated{
+	data := models.OrderEventDiscriminator{
 		Changed: &models.OrderChanged{uuid.MustParse("58d5e212-165b-4ca0-909b-c86b9cee0111"), 3},
 	}
 
@@ -304,7 +322,7 @@ func TestDiscriminatedOneOfFields(t *testing.T) {
 	assert.NilError(t, err)
 	assert.Equal(t, jsonStr, string(actualJson))
 
-	var actualData models.OrderEventDiscriminated
+	var actualData models.OrderEventDiscriminator
 	err = json.Unmarshal([]byte(jsonStr), &actualData)
 	assert.NilError(t, err)
 	assert.Equal(t, reflect.DeepEqual(data, actualData), true)
