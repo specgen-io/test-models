@@ -160,7 +160,7 @@ jobs:
           key: cache-{{ checksum "./scala-circe/build.sbt" }}
           paths:
             - ~/.sbt
-            - ~/.ivy2   
+            - ~/.ivy2
   java:
     working_directory: ~/test-models-java
     docker:
@@ -185,6 +185,26 @@ jobs:
           key: cache-{{ checksum "./java/pom.xml" }}
           paths:
             - ~/.ivy2                  
+
+  kotlin-jackson:
+    working_directory: ~/test-models-gradle-kotlin
+    docker:
+      - image: circleci/openjdk:11-jdk
+    steps:
+      - checkout
+      - restore_cache:
+          key: cache-{{ checksum "./kotlin-jackson/build.gradle.kts" }}-{{ checksum "./kotlin-jackson/settings.gradle.kts" }}
+      - run:
+          name: Gradle build
+          command: |
+            cd ./kotlin-jackson
+            ./gradlew --build-cache --no-daemon --stacktrace build \
+            -Djfrog.user=$JFROG_USER \
+            -Djfrog.pass=$JFROG_PASS \
+            -Dspecgen.version=<<pipeline.parameters.specgen-version>>
+      - save_cache:
+          key: cache-{{ checksum "./kotlin-jackson/build.gradle.kts" }}-{{ checksum "./kotlin-jackson/settings.gradle.kts" }}
+          paths: [ ~/.gradle ]
 
 workflows:
   build-test:
