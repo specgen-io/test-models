@@ -202,8 +202,15 @@ jobs:
             -Djfrog.user=$JFROG_USER \
             -Djfrog.pass=$JFROG_PASS \
             -Dspecgen.version=<<pipeline.parameters.specgen-version>>
+      - run:
+          name: Save test results
+          command: |
+            cd ./kotlin-jackson
+            mkdir -p ./test-results/junit/
+            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ./test-results/junit/ \;
+          when: always
       - store_test_results:
-          path: ~/test-models-gradle-kotlin/kotlin-jackson/build/test-results
+          path: ~/test-models-gradle-kotlin/kotlin-jackson/test-results
       - save_cache:
           key: cache-{{ checksum "./kotlin-jackson/build.gradle.kts" }}-{{ checksum "./kotlin-jackson/settings.gradle.kts" }}
           paths: [ ~/.gradle ]
