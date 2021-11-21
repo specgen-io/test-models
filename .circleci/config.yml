@@ -221,3 +221,5 @@ workflows:
           context: specgen
       - java:
           context: specgen
+      - kotlin-jackson:
+          context: specgen
