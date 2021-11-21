@@ -6,7 +6,7 @@ orbs:
 parameters:
   specgen-version:
     type: string
-    default: 2.1.856
+    default: 2.1.872
   specgen-version-major:
     type: string
     default: v2
@@ -160,7 +160,7 @@ jobs:
           key: cache-{{ checksum "./scala-circe/build.sbt" }}
           paths:
             - ~/.sbt
-            - ~/.ivy2   
+            - ~/.ivy2
   java:
     working_directory: ~/test-models-java
     docker:
@@ -186,6 +186,28 @@ jobs:
           paths:
             - ~/.ivy2                  
 
+  kotlin-jackson:
+    working_directory: ~/test-models-gradle-kotlin
+    docker:
+      - image: circleci/openjdk:11-jdk
+    steps:
+      - checkout
+      - restore_cache:
+          key: cache-{{ checksum "./kotlin-jackson/build.gradle.kts" }}-{{ checksum "./kotlin-jackson/settings.gradle.kts" }}
+      - run:
+          name: Gradle build
+          command: |
+            cd ./kotlin-jackson
+            ./gradlew --build-cache --no-daemon --stacktrace test \
+            -Djfrog.user=$JFROG_USER \
+            -Djfrog.pass=$JFROG_PASS \
+            -Dspecgen.version=<<pipeline.parameters.specgen-version>>
+      - store_test_results:
+          path: ~/test-models-gradle-kotlin/kotlin-jackson/build/test-results
+      - save_cache:
+          key: cache-{{ checksum "./kotlin-jackson/build.gradle.kts" }}-{{ checksum "./kotlin-jackson/settings.gradle.kts" }}
+          paths: [ ~/.gradle ]
+
 workflows:
   build-test:
     jobs:
@@ -200,4 +222,6 @@ workflows:
       - scala-circe:
           context: specgen
       - java:
+          context: specgen
+      - kotlin-jackson:
           context: specgen
