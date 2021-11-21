@@ -208,9 +208,10 @@ jobs:
             cd ./kotlin-jackson
             mkdir -p ./test-results/junit/
             find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ./test-results/junit/ \;
-          when: always
       - store_test_results:
           path: ~/test-models-gradle-kotlin/kotlin-jackson/test-results
+      - store_artifacts:
+          path: ~/test-models-gradle-kotlin/kotlin-jackson/test-results/junit
       - save_cache:
           key: cache-{{ checksum "./kotlin-jackson/build.gradle.kts" }}-{{ checksum "./kotlin-jackson/settings.gradle.kts" }}
           paths: [ ~/.gradle ]
