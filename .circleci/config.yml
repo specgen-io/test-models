@@ -6,7 +6,7 @@ orbs:
 parameters:
   specgen-version:
     type: string
-    default: 2.1.910
+    default: 2.1.920
   specgen-version-major:
     type: string
     default: v2
@@ -96,7 +96,7 @@ jobs:
       - save_cache:
           key: cache-{{ checksum "./ts-superstruct/package.json" }}
           paths:
-            - ~/test-models-superstruct/ts-superstruct/node_modules 
+            - ~/test-models-superstruct/ts-superstruct/node_modules
       - store_test_results:
           path: ./ts-superstruct/test-results
   ts-iots:
@@ -131,9 +131,9 @@ jobs:
       - save_cache:
           key: cache-{{ checksum "./ts-iots/package.json" }}
           paths:
-            - ~/test-models-iots/ts-iots/node_modules 
+            - ~/test-models-iots/ts-iots/node_modules
       - store_test_results:
-          path: ./ts-iots/test-results         
+          path: ./ts-iots/test-results
   scala-circe:
     environment:
       SPECGEN_VERSION: << pipeline.parameters.specgen-version >>
@@ -161,30 +161,30 @@ jobs:
           paths:
             - ~/.sbt
             - ~/.ivy2
-  java:
-    working_directory: ~/test-models-java
+  java-jackson:
+    working_directory: ~/test-models-java-jackson
     docker:
       - image: circleci/openjdk:11-jdk
     steps:
       - checkout
       - restore_cache:
           keys:
-            - cache-{{ checksum "./java/pom.xml" }}
+            - cache-{{ checksum "./java-jackson/pom.xml" }}
       - artifactory/setup-maven:
           jfrog-server-url: specgen.jfrog.io
           repo-name: maven
       - run:
-          name: Test Maven models
+          name: Maven build
           command: |
-            cd ./java
+            cd ./java-jackson
             mkdir -p ./test-results
             mvn clean test -Dspecgen.version=<<pipeline.parameters.specgen-version>>
       - store_test_results:
-          path: ./java/test-results
+          path: ./java-jackson/test-results
       - save_cache:
-          key: cache-{{ checksum "./java/pom.xml" }}
+          key: cache-{{ checksum "./java-jackson/pom.xml" }}
           paths:
-            - ~/.ivy2                  
+            - ~/.m2
 
   kotlin-jackson:
     working_directory: ~/test-models-gradle-kotlin
@@ -221,7 +221,7 @@ workflows:
           context: specgen
       - scala-circe:
           context: specgen
-      - java:
+      - java-jackson:
           context: specgen
       - kotlin-jackson:
           context: specgen
