@@ -1,14 +1,14 @@
 package test_service.models;
 
 import com.fasterxml.jackson.databind.*;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
 
 import java.io.*;
 import java.math.BigDecimal;
 import java.time.*;
 import java.util.*;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static test_service.models.Utils.*;
 
 public class ToStringTest {
