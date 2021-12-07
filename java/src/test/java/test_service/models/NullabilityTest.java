@@ -7,6 +7,6 @@ import static org.junit.Assert.assertThrows;
 public class NullabilityTest {
     @Test
     public void oneOfItemNotNull() {
-        assertThrows(IllegalArgumentException.class, () -> new OrderEventWrapperCanceled(null));
+        assertThrows(IllegalArgumentException.class, () -> new OrderEventWrapper.Canceled(null));
     }
 }

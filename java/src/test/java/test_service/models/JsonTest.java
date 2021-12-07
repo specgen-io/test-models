@@ -139,7 +139,7 @@ public class JsonTest {
 
 	@Test
 	public void oneOfWrapper() throws IOException {
-		OrderEventWrapper data = new OrderEventWrapperCanceled(new OrderCanceled(UUID.fromString("123e4567-e89b-12d3-a456-426655440000")));
+		OrderEventWrapper data = new OrderEventWrapper.Canceled(new OrderCanceled(UUID.fromString("123e4567-e89b-12d3-a456-426655440000")));
 		String jsonStr = "{'canceled':{'id':'123e4567-e89b-12d3-a456-426655440000'}}";
 		check(data, jsonStr, OrderEventWrapper.class);
 	}
@@ -154,7 +154,7 @@ public class JsonTest {
 
 	@Test
 	public void jsonOneOfDiscriminatorTest() throws IOException {
-		OrderEventDiscriminator data = new OrderEventDiscriminatorCanceled(new OrderCanceled(UUID.fromString("123e4567-e89b-12d3-a456-426655440000")));
+		OrderEventDiscriminator data = new OrderEventDiscriminator.Canceled(new OrderCanceled(UUID.fromString("123e4567-e89b-12d3-a456-426655440000")));
 		String jsonStr = "{'_type':'canceled','id':'123e4567-e89b-12d3-a456-426655440000'}";
 		check(data, jsonStr, OrderEventDiscriminator.class);
 	}
