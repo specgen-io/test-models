@@ -98,7 +98,7 @@ public class ToStringTest {
 
     @Test
     public void jsonOneOfWrapperTest() {
-        OrderEventWrapper data = new OrderEventWrapperCanceled(new OrderCanceled(UUID.fromString("123e4567-e89b-12d3-a456-426655440000")));
+        OrderEventWrapper data = new OrderEventWrapper.Canceled(new OrderCanceled(UUID.fromString("123e4567-e89b-12d3-a456-426655440000")));
         String expected = "OrderCanceled{data=OrderCanceled{id=123e4567-e89b-12d3-a456-426655440000}}";
         String dataStr = data.toString();
         assertEquals(dataStr, expected);
@@ -106,7 +106,7 @@ public class ToStringTest {
 
     @Test
     public void jsonOneOfDiscriminatorTest() {
-        OrderEventDiscriminator data = new OrderEventDiscriminatorCanceled(new OrderCanceled(UUID.fromString("123e4567-e89b-12d3-a456-426655440000")));
+        OrderEventDiscriminator data = new OrderEventDiscriminator.Canceled(new OrderCanceled(UUID.fromString("123e4567-e89b-12d3-a456-426655440000")));
         String expected = "OrderCanceled{data=OrderCanceled{id=123e4567-e89b-12d3-a456-426655440000}}";
         String dataStr = data.toString();
         assertEquals(dataStr, expected);
