@@ -11,6 +11,10 @@ import (
 	"testing"
 )
 
+func init() {
+	decimal.MarshalJSONWithoutQuotes = true
+}
+
 func TestMessageFields(t *testing.T) {
 	data := models.Message{
 		0,
@@ -76,7 +80,7 @@ func TestNumericFields(t *testing.T) {
 		decimalField,
 	}
 
-	jsonStr := `{"int_field":0,"long_field":0,"float_field":1.23,"double_field":1.23,"decimal_field":"1.23"}`
+	jsonStr := `{"int_field":0,"long_field":0,"float_field":1.23,"double_field":1.23,"decimal_field":1.23}`
 
 	actualJson, err := json.Marshal(data)
 	assert.NilError(t, err)
@@ -294,7 +298,7 @@ func TestEnumFieldsNegative(t *testing.T) {
 	assert.ErrorContains(t, err, "gfgnfg")
 }
 
-func TestOneOfFields(t *testing.T) {
+func TestOneOfWrapper(t *testing.T) {
 	data := models.OrderEventWrapper{
 		Changed: &models.OrderChanged{uuid.MustParse("58d5e212-165b-4ca0-909b-c86b9cee0111"), 3},
 	}
@@ -311,7 +315,7 @@ func TestOneOfFields(t *testing.T) {
 	assert.Equal(t, reflect.DeepEqual(data, actualData), true)
 }
 
-func TestDiscriminatedOneOfFields(t *testing.T) {
+func TestOneOfDiscriminator(t *testing.T) {
 	data := models.OrderEventDiscriminator{
 		Changed: &models.OrderChanged{uuid.MustParse("58d5e212-165b-4ca0-909b-c86b9cee0111"), 3},
 	}
