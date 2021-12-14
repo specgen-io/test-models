@@ -8,3 +8,9 @@ export const checkEncodeDecode = <T>(theType: t.Struct<T, unknown>, decoded: T, 
     expect(t.decode(theType, encoded)).toStrictEqual(decoded);
   })
 }
+
+export function datetime(year: number, month: number, date: number, hours: number, minutes: number, seconds: number): Date {
+  const utcDatetime = Date.UTC(year, month-1, date, hours, minutes, seconds)
+  const result = new Date(utcDatetime) 
+  return result
+}

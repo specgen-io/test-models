@@ -1,5 +1,5 @@
 import * as t from '../test-service/superstruct'
-import { checkEncodeDecode } from './util'
+import { checkEncodeDecode, datetime } from './util'
 
 import {
   TMessage,
@@ -86,14 +86,14 @@ describe('non numeric fields', function() {
     string_field: 'some string',
     uuid_field: '123e4567-e89b-12d3-a456-426655440000',
     date_field: '2021-01-01',
-    datetime_field: new Date('2021-01-02T04:54:00.000Z'),
+    datetime_field: datetime(2021, 1, 2, 4, 54, 0),
   }
   let encoded = {
     boolean_field: true,
     string_field: 'some string',
     uuid_field: '123e4567-e89b-12d3-a456-426655440000',
     date_field: '2021-01-01',
-    datetime_field: '2021-01-02T04:54:00.000Z',
+    datetime_field: '2021-01-02T04:54:00',
   }
   checkEncodeDecode(TNonNumericFields, decoded, encoded)
 });
