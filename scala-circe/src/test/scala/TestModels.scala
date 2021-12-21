@@ -6,8 +6,6 @@ import java.util.UUID
 
 import io.circe.{Decoder, Encoder, Json}
 
-import spec._
-
 import org.scalatest.FlatSpec
 
 class ModelsSpec extends FlatSpec {

@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter
 import java.util.UUID
 import io.circe.{Decoder, Encoder, Json}
 
-import spec._
+import testservice.models.Jsoner
 
 import org.scalatest.FlatSpec
 
