@@ -32,6 +32,12 @@ func TestMessageFields(t *testing.T) {
 	assert.Equal(t, reflect.DeepEqual(data, actualData), true)
 }
 
+func TestMessageUnmarshalFieldMissing(t *testing.T) {
+	var data models.Message
+	err := json.Unmarshal([]byte(`{}`), &data)
+	assert.ErrorContains(t, err, "missing")
+}
+
 func TestMessageCasesFields(t *testing.T) {
 	data := models.MessageCases{
 		"the snake_case field",
@@ -315,6 +321,35 @@ func TestOneOfWrapper(t *testing.T) {
 	assert.Equal(t, reflect.DeepEqual(data, actualData), true)
 }
 
+func TestOneOfWrapperPointer(t *testing.T) {
+	data := &models.OrderEventWrapper{
+		Changed: &models.OrderChanged{uuid.MustParse("58d5e212-165b-4ca0-909b-c86b9cee0111"), 3},
+	}
+
+	jsonStr := `{"changed":{"id":"58d5e212-165b-4ca0-909b-c86b9cee0111","quantity":3}}`
+
+	actualJson, err := json.Marshal(data)
+	assert.NilError(t, err)
+	assert.Equal(t, jsonStr, string(actualJson))
+
+	var actualData models.OrderEventWrapper
+	err = json.Unmarshal([]byte(jsonStr), &actualData)
+	assert.NilError(t, err)
+	assert.Equal(t, reflect.DeepEqual(data, &actualData), true)
+}
+
+func TestOneOfWrapperMarshalCaseMissing(t *testing.T) {
+	data := models.OrderEventWrapper{}
+	_, err := json.Marshal(data)
+	assert.ErrorContains(t, err, "union case is not set")
+}
+
+func TestOneOfWrapperUnmarshalCaseMissing(t *testing.T) {
+	var actualData models.OrderEventWrapper
+	err := json.Unmarshal([]byte(`{}`), &actualData)
+	assert.ErrorContains(t, err, "union case is not set")
+}
+
 func TestOneOfDiscriminator(t *testing.T) {
 	data := models.OrderEventDiscriminator{
 		Changed: &models.OrderChanged{uuid.MustParse("58d5e212-165b-4ca0-909b-c86b9cee0111"), 3},
@@ -330,4 +365,22 @@ func TestOneOfDiscriminator(t *testing.T) {
 	err = json.Unmarshal([]byte(jsonStr), &actualData)
 	assert.NilError(t, err)
 	assert.Equal(t, reflect.DeepEqual(data, actualData), true)
+}
+
+func TestOneOfDiscriminatorMarshalCaseMissing(t *testing.T) {
+	data := models.OrderEventDiscriminator{}
+	_, err := json.Marshal(data)
+	assert.ErrorContains(t, err, "union case is not set")
+}
+
+func TestOneOfDiscriminatorUnmarshalDiscriminatorMissing(t *testing.T) {
+	var actualData models.OrderEventDiscriminator
+	err := json.Unmarshal([]byte(`{}`), &actualData)
+	assert.ErrorContains(t, err, "not found")
+}
+
+func TestOneOfDiscriminatorUnmarshalDataMissing(t *testing.T) {
+	var actualData models.OrderEventDiscriminator
+	err := json.Unmarshal([]byte(`{"_type":"changed"}`), &actualData)
+	assert.ErrorContains(t, err, "missing")
 }
