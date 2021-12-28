@@ -3,9 +3,9 @@ name := "echo-client"
 scalaVersion := "2.13.2"
 version := "0.0.1"
 
-enablePlugins(SpecCirce)
+enablePlugins(SpecgenModels)
 
-specFile := file("./../spec.yaml")
+specgenSpecFile := file("./../spec.yaml")
 
 libraryDependencies ++= specCirceDependencies ++ Seq(
   "org.scalatest" %% "scalatest" % "3.0.8" % Test
