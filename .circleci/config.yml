@@ -6,7 +6,7 @@ orbs:
 parameters:
   specgen-version:
     type: string
-    default: 2.1.1166
+    default: 2.1.1182
   specgen-version-major:
     type: string
     default: v2
@@ -44,7 +44,6 @@ jobs:
           command: |
             cd ./ruby
             tee --append ./Gemfile \<<END
-
             source 'https://specgen.jfrog.io/artifactory/api/gems/gems/' do
               gem 'specgen', '<< pipeline.parameters.specgen-version >>'
             end
