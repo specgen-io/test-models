@@ -7,7 +7,6 @@ import java.time.*
 import java.util.*
 import kotlin.test.*
 
-
 internal class ModelsTest {
     private val mapper = setupObjectMapper(jacksonObjectMapper())
 
