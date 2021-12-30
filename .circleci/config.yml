@@ -44,7 +44,6 @@ jobs:
           command: |
             cd ./ruby
             tee --append ./Gemfile \<<END
-
             source 'https://specgen.jfrog.io/artifactory/api/gems/gems/' do
               gem 'specgen', '<< pipeline.parameters.specgen-version >>'
             end
