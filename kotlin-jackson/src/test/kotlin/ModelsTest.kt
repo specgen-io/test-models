@@ -7,21 +7,20 @@ import java.time.*
 import java.util.*
 import kotlin.test.*
 
-
 internal class ModelsTest {
-    val mapper = setupObjectMapper(jacksonObjectMapper())
+    private val mapper = setupObjectMapper(jacksonObjectMapper())
 
-    fun <T> checkDeserialization(data: T, jsonStr: String, tClass: Class<T>) {
+    private fun <T> checkDeserialization(data: T, jsonStr: String, tClass: Class<T>) {
         val deserialized: T = mapper.readValue(jsonStr, tClass)
         assertEquals(data, deserialized)
     }
 
-    fun <T> checkSerialization(data: T, jsonStr: String) {
+    private fun <T> checkSerialization(data: T, jsonStr: String) {
         val serialized = mapper.writeValueAsString(data)
         assertEquals(jsonStr, serialized)
     }
 
-    fun <T> check(data: T, jsonStr: String, tClass: Class<T>) {
+    private fun <T> check(data: T, jsonStr: String, tClass: Class<T>) {
         checkSerialization(data, jsonStr)
         checkDeserialization(data, jsonStr, tClass)
     }
@@ -92,7 +91,7 @@ internal class ModelsTest {
 
     @Test
     fun arrayType() {
-        val data = ArrayFields(listOf(1, 2, 3), listOf("one", "two", "three"))
+        val data = ArrayFields(arrayOf(1, 2, 3), arrayOf("one", "two", "three"))
         val jsonStr = """{"int_array_field":[1,2,3],"string_array_field":["one","two","three"]}"""
         check(data, jsonStr, ArrayFields::class.java)
     }
