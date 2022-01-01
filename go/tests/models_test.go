@@ -155,6 +155,32 @@ func TestArrayFields(t *testing.T) {
 	assert.Equal(t, reflect.DeepEqual(data, actualData), true)
 }
 
+func TestArrayFieldUnmarshalMissingValue(t *testing.T) {
+	jsonStr := `{"string_array_field":["one","two","three"]}`
+
+	var actualData models.ArrayFields
+	err := json.Unmarshal([]byte(jsonStr), &actualData)
+	assert.ErrorContains(t, err, "field missing: int_array_field")
+}
+
+func TestArrayFieldUnmarshalNullValue(t *testing.T) {
+	jsonStr := `{"int_array_field":null,"string_array_field":["one","two","three"]}`
+
+	var actualData models.ArrayFields
+	err := json.Unmarshal([]byte(jsonStr), &actualData)
+	assert.ErrorContains(t, err, "doesn't have value: int_array_field")
+}
+
+func TestArrayFieldMarshalMissingValue(t *testing.T) {
+	data := models.ArrayFields{
+		nil,
+		[]string{"one", "two", "three"},
+	}
+
+	_, err := json.Marshal(data)
+	assert.ErrorContains(t, err, "doesn't have value")
+}
+
 func TestArrayFieldsNegative(t *testing.T) {
 	jsonStr := `{"int_array_field":[nil],"string_array_field":["one","two","three"]}`
 
@@ -215,7 +241,7 @@ func TestOptionalNil(t *testing.T) {
 		nil,
 	}
 
-	jsonStr := `{"int_option_field":null,"string_option_field":null}`
+	jsonStr := `{}`
 
 	actualJson, err := json.Marshal(data)
 	assert.NilError(t, err)
