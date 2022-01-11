@@ -16,7 +16,7 @@ public class JsonTest {
 	public static ObjectMapper createObjectMapper() {
 		ObjectMapper objectMapper = new ObjectMapper();
 		Json.setupObjectMapper(objectMapper);
-		return  objectMapper;
+		return objectMapper;
 	}
 
 	public <T> void check(T data, String jsonStr, Class<T> tClass) throws IOException {
@@ -45,10 +45,10 @@ public class JsonTest {
 	}
 	
 	@Test
-	public void objectModelMissingValueTypeField() throws IOException {
-		var exception = assertThrows(JsonMappingException.class, () -> {
-			createObjectMapper().readValue("{}", Message.class);
-		});
+	public void objectModelMissingValueTypeField() {
+		var exception = assertThrows(JsonMappingException.class, () ->
+			createObjectMapper().readValue("{}", Message.class)
+		);
 		assertNotNull(exception);
 	}
 
