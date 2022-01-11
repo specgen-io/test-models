@@ -72,7 +72,6 @@
                 <executions>
                     <execution>
                         <goals>
-                            <jsonlib>jackson</jsonlib>
                             <goal>models-java</goal>
                         </goals>
                     </execution>
