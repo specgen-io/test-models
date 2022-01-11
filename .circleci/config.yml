@@ -6,7 +6,7 @@ orbs:
 parameters:
   specgen-version:
     type: string
-    default: 2.1.1282
+    default: 2.1.1234
   specgen-version-major:
     type: string
     default: v2
@@ -184,30 +184,6 @@ jobs:
           key: cache-{{ checksum "./java-jackson/pom.xml" }}
           paths:
             - ~/.m2
-  java-moshi:
-    working_directory: ~/test-models-java-moshi
-    docker:
-      - image: circleci/openjdk:11-jdk
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - cache-{{ checksum "./java-moshi/pom.xml" }}
-      - artifactory/setup-maven:
-          jfrog-server-url: specgen.jfrog.io
-          repo-name: maven
-      - run:
-          name: Maven build
-          command: |
-            cd ./java-moshi
-            mkdir -p ./test-results
-            mvn clean test -Dspecgen.version=<<pipeline.parameters.specgen-version>>
-      - store_test_results:
-          path: ./java-moshi/test-results
-      - save_cache:
-          key: cache-{{ checksum "./java-moshi/pom.xml" }}
-          paths:
-            - ~/.m2          
 
   kotlin-jackson:
     working_directory: ~/test-models-gradle-kotlin
@@ -246,7 +222,5 @@ workflows:
           context: specgen
       - java-jackson:
           context: specgen
-      - java-moshi:
-          context: specgen    
       - kotlin-jackson:
           context: specgen
