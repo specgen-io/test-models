@@ -6,6 +6,8 @@ import java.math.BigDecimal;
 import java.time.*;
 import java.util.*;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public class ToStringTest {
 
 	@Test
