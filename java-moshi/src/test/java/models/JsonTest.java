@@ -3,6 +3,7 @@ package models;
 import com.squareup.moshi.*;
 import com.squareup.moshi.adapters.*;
 import org.junit.jupiter.api.Test;
+import test_service.models.*;
 import test_service.models.adapters.*;
 
 import java.io.IOException;
@@ -10,8 +11,8 @@ import java.math.BigDecimal;
 import java.time.*;
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static test_service.models.Utils.fixQuotes;
+import static models.Utils.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class JsonTest {
 	public static Moshi createMoshiObject() {
