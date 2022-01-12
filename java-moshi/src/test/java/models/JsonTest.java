@@ -1,8 +1,7 @@
 package models;
 
-import com.squareup.moshi.JsonAdapter;
-import com.squareup.moshi.Moshi;
-import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory;
+import com.squareup.moshi.*;
+import com.squareup.moshi.adapters.*;
 import org.junit.jupiter.api.Test;
 import test_service.models.adapters.*;
 
