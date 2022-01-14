@@ -10,7 +10,8 @@ import java.time.*;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static test_service.models.Utils.*;
+
+import static test_service.models.json.Java;
 
 public class JsonTest {
 	public static ObjectMapper createObjectMapper() {
