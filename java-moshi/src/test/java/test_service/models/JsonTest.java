@@ -1,4 +1,4 @@
-package models;
+package test_service.models;
 
 import com.squareup.moshi.*;
 import com.squareup.moshi.adapters.*;
