@@ -9,7 +9,7 @@ import java.time.*;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static test_service.models.Utils.*;
+import static utils.Utils.*;
 
 public class ToStringTest {
 
