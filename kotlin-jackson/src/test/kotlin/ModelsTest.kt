@@ -6,6 +6,7 @@ import java.math.BigDecimal
 import java.time.*
 import java.util.*
 import kotlin.test.*
+import test_service.json.*
 
 internal class ModelsTest {
     private val mapper = setupObjectMapper(jacksonObjectMapper())
