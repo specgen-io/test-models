@@ -11,7 +11,7 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import static test_service.models.json.Java;
+import static test_service.json.Java;
 
 public class JsonTest {
 	public static ObjectMapper createObjectMapper() {
