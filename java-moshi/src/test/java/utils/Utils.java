@@ -1,4 +1,4 @@
-package test_service.models;
+package utils;
 
 public class Utils {
     public static String fixQuotes(String jsonStr) {

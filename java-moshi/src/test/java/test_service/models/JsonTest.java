@@ -3,15 +3,14 @@ package test_service.models;
 import com.squareup.moshi.*;
 import com.squareup.moshi.adapters.*;
 import org.junit.jupiter.api.Test;
-import test_service.models.*;
-import test_service.models.adapters.*;
+import test_service.json.adapters.*;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.*;
 import java.util.*;
 
-import static models.Utils.*;
+import static utils.Utils.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class JsonTest {
