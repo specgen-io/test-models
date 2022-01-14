@@ -9,9 +9,10 @@ import java.math.BigDecimal;
 import java.time.*;
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.*;
+import test_service.json.Json;
 
-import static test_service.json.Java;
+import static utils.Utils.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class JsonTest {
 	public static ObjectMapper createObjectMapper() {
