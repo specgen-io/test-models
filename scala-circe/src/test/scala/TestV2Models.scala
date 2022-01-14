@@ -1,4 +1,4 @@
-package testservice.models.v2
+package testservice.v2.models
 
 import java.time.{LocalDate, LocalDateTime, LocalTime}
 import java.time.format.DateTimeFormatter
