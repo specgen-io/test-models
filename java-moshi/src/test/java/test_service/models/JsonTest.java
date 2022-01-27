@@ -11,7 +11,7 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static test_service.json.Json.setupMoshiAdapters;
-import static test_service.models.Utils.fixQuotes;
+import static test_service.models.Utils.*;
 
 public class JsonTest {
 	public static Moshi createMoshiObject() {
