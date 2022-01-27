@@ -3,23 +3,22 @@ package test_service.models;
 import com.squareup.moshi.*;
 import com.squareup.moshi.adapters.*;
 import org.junit.jupiter.api.Test;
-import test_service.json.adapters.*;
 
-import java.io.IOException;
+import java.io.*;
 import java.math.BigDecimal;
 import java.time.*;
 import java.util.*;
 
-import static utils.Utils.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static test_service.json.Json.setupMoshiAdapters;
+import static test_service.models.Utils.fixQuotes;
 
 public class JsonTest {
 	public static Moshi createMoshiObject() {
-		Moshi moshi = new Moshi.Builder()
-			.add(new BigDecimalAdapter())
-			.add(new UuidAdapter())
-			.add(new LocalDateAdapter())
-			.add(new LocalDateTimeAdapter())
+		Moshi.Builder moshiBuilder = new Moshi.Builder();
+		setupMoshiAdapters(moshiBuilder);
+
+		return moshiBuilder
 			.add(PolymorphicJsonAdapterFactory.of(OrderEventDiscriminator.class, "_type")
 				.withSubtype(OrderEventDiscriminator.Created.class, "created")
 				.withSubtype(OrderEventDiscriminator.Changed.class, "changed")
@@ -29,8 +28,6 @@ public class JsonTest {
 				.withSubtype(OrderEventWrapper.Changed.class, "changed")
 				.withSubtype(OrderEventWrapper.Canceled.class, "canceled"))
 			.build();
-
-		return moshi;
 	}
 
 	public <T> void check(T data, String jsonStr, Class<T> tClass) throws IOException {
