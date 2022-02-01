@@ -19,6 +19,7 @@ dependencies {
 
 specgen {
     modelsKotlin {
+        jsonlib.set("jackson")
         specFile.set(file("../spec.yaml"))
     }
 }
