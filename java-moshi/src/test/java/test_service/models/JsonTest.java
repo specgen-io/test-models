@@ -1,8 +1,8 @@
 package test_service.models;
 
 import com.squareup.moshi.*;
-import com.squareup.moshi.adapters.*;
 import org.junit.jupiter.api.Test;
+import test_service.json.adapters.*;
 
 import java.io.*;
 import java.math.BigDecimal;
@@ -11,23 +11,30 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static test_service.json.Json.setupMoshiAdapters;
-import static test_service.models.Utils.*;
+import static utils.Utils.*;
 
 public class JsonTest {
 	public static Moshi createMoshiObject() {
 		Moshi.Builder moshiBuilder = new Moshi.Builder();
 		setupMoshiAdapters(moshiBuilder);
 
-		return moshiBuilder
-			.add(PolymorphicJsonAdapterFactory.of(OrderEventDiscriminator.class, "_type")
+		moshiBuilder
+			.add(new UnwrapFieldAdapterFactory(OrderEventDiscriminator.Created.class))
+			.add(new UnwrapFieldAdapterFactory(OrderEventDiscriminator.Changed.class))
+			.add(new UnwrapFieldAdapterFactory(OrderEventDiscriminator.Canceled.class))
+			.add(UnionAdapterFactory.of(OrderEventDiscriminator.class).withDiscriminator("_type")
 				.withSubtype(OrderEventDiscriminator.Created.class, "created")
 				.withSubtype(OrderEventDiscriminator.Changed.class, "changed")
 				.withSubtype(OrderEventDiscriminator.Canceled.class, "canceled"))
-			.add(PolymorphicJsonAdapterFactory.of(OrderEventWrapper.class, "")
+			.add(new UnwrapFieldAdapterFactory(OrderEventWrapper.Created.class))
+			.add(new UnwrapFieldAdapterFactory(OrderEventWrapper.Changed.class))
+			.add(new UnwrapFieldAdapterFactory(OrderEventWrapper.Canceled.class))
+			.add(UnionAdapterFactory.of(OrderEventWrapper.class)
 				.withSubtype(OrderEventWrapper.Created.class, "created")
 				.withSubtype(OrderEventWrapper.Changed.class, "changed")
-				.withSubtype(OrderEventWrapper.Canceled.class, "canceled"))
-			.build();
+				.withSubtype(OrderEventWrapper.Canceled.class, "canceled"));
+
+		return moshiBuilder.build();
 	}
 
 	public <T> void check(T data, String jsonStr, Class<T> tClass) throws IOException {
@@ -140,17 +147,17 @@ public class JsonTest {
 		check(data, jsonStr, OrderCreated.class);
 	}
 
-//	@Test
-//	public void oneOfWrapper() throws IOException {
-//		OrderEventWrapper data = new OrderEventWrapper.Canceled(new OrderCanceled(UUID.fromString("123e4567-e89b-12d3-a456-426655440000")));
-//		String jsonStr = "{'canceled':{'id':'123e4567-e89b-12d3-a456-426655440000'}}";
-//		check(data, jsonStr, OrderEventWrapper.class);
-//	}
-//
-//	@Test
-//	public void jsonOneOfDiscriminatorTest() throws IOException {
-//		OrderEventDiscriminator data = new OrderEventDiscriminator.Canceled(new OrderCanceled(UUID.fromString("123e4567-e89b-12d3-a456-426655440000")));
-//		String jsonStr = "{'_type':'canceled','id':'123e4567-e89b-12d3-a456-426655440000'}";
-//		check(data, jsonStr, OrderEventDiscriminator.class);
-//	}
+	@Test
+	public void oneOfWrapper() throws IOException {
+		OrderEventWrapper data = new OrderEventWrapper.Canceled(new OrderCanceled(UUID.fromString("123e4567-e89b-12d3-a456-426655440000")));
+		String jsonStr = "{'canceled':{'id':'123e4567-e89b-12d3-a456-426655440000'}}";
+		check(data, jsonStr, OrderEventWrapper.class);
+	}
+
+	@Test
+	public void oneOfDiscriminator() throws IOException {
+		OrderEventDiscriminator data = new OrderEventDiscriminator.Canceled(new OrderCanceled(UUID.fromString("123e4567-e89b-12d3-a456-426655440000")));
+		String jsonStr = "{'_type':'canceled','id':'123e4567-e89b-12d3-a456-426655440000'}";
+		check(data, jsonStr, OrderEventDiscriminator.class);
+	}
 }
