@@ -2,7 +2,6 @@ package test_service.models;
 
 import com.squareup.moshi.*;
 import org.junit.jupiter.api.Test;
-import test_service.json.adapters.*;
 
 import java.io.*;
 import java.math.BigDecimal;
@@ -17,22 +16,6 @@ public class JsonTest {
 	public static Moshi createMoshiObject() {
 		Moshi.Builder moshiBuilder = new Moshi.Builder();
 		setupMoshiAdapters(moshiBuilder);
-
-		moshiBuilder
-			.add(new UnwrapFieldAdapterFactory(OrderEventDiscriminator.Created.class))
-			.add(new UnwrapFieldAdapterFactory(OrderEventDiscriminator.Changed.class))
-			.add(new UnwrapFieldAdapterFactory(OrderEventDiscriminator.Canceled.class))
-			.add(UnionAdapterFactory.of(OrderEventDiscriminator.class).withDiscriminator("_type")
-				.withSubtype(OrderEventDiscriminator.Created.class, "created")
-				.withSubtype(OrderEventDiscriminator.Changed.class, "changed")
-				.withSubtype(OrderEventDiscriminator.Canceled.class, "canceled"))
-			.add(new UnwrapFieldAdapterFactory(OrderEventWrapper.Created.class))
-			.add(new UnwrapFieldAdapterFactory(OrderEventWrapper.Changed.class))
-			.add(new UnwrapFieldAdapterFactory(OrderEventWrapper.Canceled.class))
-			.add(UnionAdapterFactory.of(OrderEventWrapper.class)
-				.withSubtype(OrderEventWrapper.Created.class, "created")
-				.withSubtype(OrderEventWrapper.Changed.class, "changed")
-				.withSubtype(OrderEventWrapper.Canceled.class, "canceled"));
 
 		return moshiBuilder.build();
 	}
@@ -125,16 +108,16 @@ public class JsonTest {
 	@Test
 	public void jsonType() throws IOException {
 		//String jsonField = fixQuotes("{'the_array':[true,'some string'],'the_object':{'the_bool':true,'the_string':'some value'},'the_scalar':'the value'}");
-		var theObject = new HashMap<String, Object>();
-		theObject.put("the_bool", true);
-		theObject.put("the_string", "some value");
-		var theArray = new ArrayList<Object>();
-		theArray.add(true);
-		theArray.add("some string");
-		var map = new HashMap<String, Object>();
-		map.put("the_array", theArray);
-		map.put("the_object", theObject);
-		map.put("the_scalar", "the value");
+		var theObject = new HashMap<String, Object>() {{
+			put("the_bool", true);
+			put("the_string", "some value");
+		}};
+		var theArray = new ArrayList<Object>(List.of(true, "some string"));
+		var map = new HashMap<String, Object>() {{
+			put("the_array", theArray);
+			put("the_object", theObject);
+			put("the_scalar", "the value");
+		}};
 		RawJsonField data = new RawJsonField(map);
 		String jsonStr = "{'json_field':{'the_array':[true,'some string'],'the_scalar':'the value','the_object':{'the_bool':true,'the_string':'some value'}}}";
 		check(data, jsonStr, RawJsonField.class);
