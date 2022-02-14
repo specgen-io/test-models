@@ -208,7 +208,6 @@ jobs:
           key: cache-{{ checksum "./java-moshi/pom.xml" }}
           paths:
             - ~/.m2          
-
   kotlin-jackson:
     working_directory: ~/test-models-kotlin-jackson
     docker:
@@ -230,28 +229,27 @@ jobs:
       - save_cache:
           key: cache-{{ checksum "./kotlin-jackson/build.gradle.kts" }}-{{ checksum "./kotlin-jackson/settings.gradle.kts" }}
           paths: [ ~/.gradle ]
-
-kotlin-moshi:
-    working_directory: ~/test-models-kotlin-moshi
-    docker:
-      - image: circleci/openjdk:11-jdk
-    steps:
-      - checkout
-      - restore_cache:
-          key: cache-{{ checksum "./kotlin-moshi/build.gradle.kts" }}-{{ checksum "./kotlin-moshi/settings.gradle.kts" }}
-      - run:
-          name: Gradle build
-          command: |
-            cd ./kotlin-moshi
-            ./gradlew --build-cache --no-daemon --stacktrace test \
-            -Djfrog.user=$JFROG_USER \
-            -Djfrog.pass=$JFROG_PASS \
-            -Dspecgen.version=<<pipeline.parameters.specgen-version>>
-      - store_test_results:
-          path: ./kotlin-moshi/build/test-results
-      - save_cache:
-          key: cache-{{ checksum "./kotlin-moshi/build.gradle.kts" }}-{{ checksum "./kotlin-moshi/settings.gradle.kts" }}
-          paths: [ ~/.gradle ]
+  kotlin-moshi:
+      working_directory: ~/test-models-kotlin-moshi
+      docker:
+        - image: circleci/openjdk:11-jdk
+      steps:
+        - checkout
+        - restore_cache:
+            key: cache-{{ checksum "./kotlin-moshi/build.gradle.kts" }}-{{ checksum "./kotlin-moshi/settings.gradle.kts" }}
+        - run:
+            name: Gradle build
+            command: |
+              cd ./kotlin-moshi
+              ./gradlew --build-cache --no-daemon --stacktrace test \
+              -Djfrog.user=$JFROG_USER \
+              -Djfrog.pass=$JFROG_PASS \
+              -Dspecgen.version=<<pipeline.parameters.specgen-version>>
+        - store_test_results:
+            path: ./kotlin-moshi/build/test-results
+        - save_cache:
+            key: cache-{{ checksum "./kotlin-moshi/build.gradle.kts" }}-{{ checksum "./kotlin-moshi/settings.gradle.kts" }}
+            paths: [ ~/.gradle ]
 
 workflows:
   build-test:
