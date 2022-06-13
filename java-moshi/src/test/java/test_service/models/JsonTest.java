@@ -76,7 +76,7 @@ public class JsonTest {
 
 	@Test
 	public void arrayType() throws IOException {
-		ArrayFields data = new ArrayFields(new int[]{1, 2, 3}, new String[]{"one", "two", "three"});
+		ArrayFields data = new ArrayFields(Arrays.asList(1, 2, 3), Arrays.asList("one", "two", "three"));
 		String jsonStr = "{'int_array_field':[1,2,3],'string_array_field':['one','two','three']}";
 		check(data, jsonStr, ArrayFields.class);
 	}
@@ -84,8 +84,14 @@ public class JsonTest {
 	@Test
 	public void mapType() throws IOException {
 		MapFields data = new MapFields(
-			new HashMap<>() {{ put("one", 1); put("two", 2); }},
-			new HashMap<>() {{ put("one", "first"); put("two", "second"); }}
+			new HashMap<>() {{
+				put("one", 1);
+				put("two", 2);
+			}},
+			new HashMap<>() {{
+				put("one", "first");
+				put("two", "second");
+			}}
 		);
 		String jsonStr = "{'int_map_field':{'one':1,'two':2},'string_map_field':{'one':'first','two':'second'}}";
 		check(data, jsonStr, MapFields.class);
