@@ -50,7 +50,7 @@ public class ToStringTest {
 
     @Test
     public void jsonArrayFieldsTest() {
-        ArrayFields data = new ArrayFields(new int[]{1, 2, 3}, new String[]{"one", "two", "three"});
+        ArrayFields data = new ArrayFields(Arrays.asList(1, 2, 3), (Arrays.asList("one", "two", "three")));
         String expected = "ArrayFields{intArrayField=[1, 2, 3], stringArrayField=[one, two, three]}";
         String dataStr = data.toString();
         assertEquals(dataStr, expected);

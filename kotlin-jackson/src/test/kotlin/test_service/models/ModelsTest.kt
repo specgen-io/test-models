@@ -92,7 +92,7 @@ internal class ModelsTest {
 
     @Test
     fun arrayType() {
-        val data = ArrayFields(arrayOf(1, 2, 3), arrayOf("one", "two", "three"))
+        val data = ArrayFields(listOf(1, 2, 3), listOf("one", "two", "three"))
         val jsonStr = """{"int_array_field":[1,2,3],"string_array_field":["one","two","three"]}"""
         check(data, jsonStr, ArrayFields::class.java)
     }
