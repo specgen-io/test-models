@@ -1,6 +1,6 @@
 plugins {
     kotlin("jvm") version "1.5.31"
-    id("io.specgen.gradle")
+    id("io.specgen.kotlin.gradle")
 }
 
 group = "io.specgen"
